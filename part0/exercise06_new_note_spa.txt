@@ -1,0 +1,7 @@
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over selain:
+JSON muistiinpano, 
+jossa content ja date
+end note
+
+palvelin-->selain: Status code 201 created
