@@ -6,6 +6,9 @@ const Button =({handleClick, text})=>(
   </button>
 )
 
+const HasVotes =({points})=> <div>has {points} votes</div>
+const WriteAnecdote =({text})=> <div>{text}</div>
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -16,11 +19,9 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.'
   ]
-  
   // useStates
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
-
   //eventhandlers
   const nextAnecdote = () => setSelected(Math.floor(Math.random() * anecdotes.length))
   const giveVote = () => {
@@ -29,18 +30,16 @@ const App = () => {
     setPoints(copy)
   }
 
-
   return (
     <div>
       <h1>Anecdote of the day</h1>
-      <div>{anecdotes[selected]}</div>
-      <div>has {points[selected]} votes</div>
+      <WriteAnecdote text = {anecdotes[selected]}/>
+      <HasVotes points ={ points[selected]}/>
       <Button handleClick={giveVote} text = "vote"/>
       <Button handleClick={nextAnecdote} text = "next anecdote"/>
       <h1>Anecdote with most votes</h1>
-      <div>{anecdotes[points.indexOf(Math.max(...points))]}</div>
-      <div>has {Math.max(...points)} votes</div>
-
+      <WriteAnecdote text = {anecdotes[points.indexOf(Math.max(...points))]}/>
+      <HasVotes points ={Math.max(...points)} votes/>
     </div>
   )
 }
