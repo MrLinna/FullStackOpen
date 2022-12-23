@@ -3,7 +3,7 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import ContactService from './services/Contacts'
-
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -12,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [notificationMsg, setNotificationMsg] = useState({msg: null, type: null})
   
   // effect hook to get data from server
   useEffect(()=>{
@@ -24,14 +25,13 @@ const App = () => {
   },[])
 
   // events
-  const addNumber = (event) => {
+  const addContact = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
       number: newNumber
     }
     const existsAlready = persons.filter(eachPerson => eachPerson.name === personObject.name)
-    
     existsAlready.length > 0
       ? updateContact(personObject, existsAlready[0])
       : ContactService
@@ -40,12 +40,11 @@ const App = () => {
           setPersons(persons.concat(returnedContact))
           setNewName("") 
           setNewNumber("")
-        }) 
-}
-
+          setNotificationMsg({msg:`Added ${personObject.name}`, type: "add"})
+          removeNotification()
+        })
+  }
   const updateContact=(personObject, oldContact)=>{
-    
-
     if (window.confirm (`${personObject.name} is already added to phonebook, replace the old number with a new one?`)){
       ContactService
         .update(oldContact.id, personObject)
@@ -53,30 +52,64 @@ const App = () => {
           setPersons(persons.map(person => person.id !== oldContact.id ? person : response))
           setNewName("")
           setNewNumber("")
+          setNotificationMsg({msg:`Updated ${personObject.name}`, type: "add"})
+          removeNotification()
+        })
+        .catch(() => {
+          handleError(personObject)//, "updateError")
         })
       }
   }
-
-  const handleNameChange =(event)=>{
-    setNewName(event.target.value)
-  }
-  
-  const handleNumberChange =(event)=>{
-    setNewNumber(event.target.value)
-  }
-  
-  const handleFilterChange =(event)=>{
-    setNewFilter(event.target.value)
-  }
-
   const deleteContact=(person)=>{
     if (window.confirm (`Delete ${person.name}?`)){
       ContactService
         .remove(person.id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== person.id))
+          setNotificationMsg({msg:`removed ${person.name}`, type: "remove"})
+          removeNotification()
+        })
+        .catch(() => {
+          handleError(person)//, "deleteError")
         })
       }
+  }
+  const removeNotification = () => {
+    setTimeout(() => {
+      setNotificationMsg({msg: null, type: null})
+    }, 5000)
+  }
+  const handleError =(person)=>{//, type
+    //if (type === "deleteError"){
+      setNotificationMsg({
+        msg:`Information of '${person.name}' has already been removed from server`, 
+        type: "remove"
+      })
+      removeNotification()
+      setPersons(persons.filter(p => p.id !== person.id))
+    /*}
+    if (type === "updateError"){
+      ContactService
+          .create(person)
+          .then(returnedContact => {
+            setPersons(persons.concat(returnedContact))
+            setNewName("") 
+            setNewNumber("")
+            setNotificationMsg({msg:`Updated ${person.name}`, type: "add"})
+            removeNotification()
+          })
+    }*/
+  
+  }
+  const handleNameChange =(event)=>{
+    setNewName(event.target.value)
+  }
+  const handleNumberChange =(event)=>{
+    setNewNumber(event.target.value)
+  }
+  
+  const handleFilterChange =(event)=>{
+    setNewFilter(event.target.value)
   }
 
   const personsToShow = 
@@ -87,7 +120,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={notificationMsg} />
       <Filter newFilter = {newFilter} handleNewFilter = {handleFilterChange}/>
 
       <h3>add a new</h3>
@@ -97,7 +130,7 @@ const App = () => {
         newNumber          = {newNumber} 
         handleNameChange   = {handleNameChange} 
         handleNumberChange = {handleNumberChange} 
-        addNumber          = {addNumber} 
+        addNumber          = {addContact} 
       />
 
       <h3>Numbers</h3>
