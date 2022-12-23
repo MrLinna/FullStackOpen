@@ -28,8 +28,5 @@
 
 ### [Part 12 - Containers](https://fullstackopen.com/en/part12)
 
-<<<<<<< HEAD
 ### [Part 13 - Using relational databases](https://fullstackopen.com/en/part13)
-=======
-### [Part 13 - Using relational databases](https://fullstackopen.com/en/part13)
->>>>>>> 8bf5ec140a7359bfe72d7fbec3525e8897e39356
+
