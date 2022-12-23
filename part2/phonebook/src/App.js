@@ -24,13 +24,14 @@ const App = () => {
       })
   },[])
 
-  // events
+  // add a new contact 
   const addContact = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
       number: newNumber
     }
+    // if the contact exists already
     const existsAlready = persons.filter(eachPerson => eachPerson.name === personObject.name)
     existsAlready.length > 0
       ? updateContact(personObject, existsAlready[0])
@@ -44,6 +45,7 @@ const App = () => {
           removeNotification()
         })
   }
+  // update existing contact
   const updateContact=(personObject, oldContact)=>{
     if (window.confirm (`${personObject.name} is already added to phonebook, replace the old number with a new one?`)){
       ContactService
@@ -60,6 +62,7 @@ const App = () => {
         })
       }
   }
+  // delete contact from server
   const deleteContact=(person)=>{
     if (window.confirm (`Delete ${person.name}?`)){
       ContactService
@@ -74,6 +77,7 @@ const App = () => {
         })
       }
   }
+  // timeout to hide notifications
   const removeNotification = () => {
     setTimeout(() => {
       setNotificationMsg({msg: null, type: null})
@@ -88,6 +92,7 @@ const App = () => {
       removeNotification()
       setPersons(persons.filter(p => p.id !== person.id))
     /*}
+    //  add new contact when one tries to update an already deleted contact
     if (type === "updateError"){
       ContactService
           .create(person)
@@ -101,6 +106,7 @@ const App = () => {
     }*/
   
   }
+  // handle events
   const handleNameChange =(event)=>{
     setNewName(event.target.value)
   }
