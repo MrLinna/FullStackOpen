@@ -47,7 +47,8 @@ const App = () => {
         // added in exercise 3.19
         .catch(error => {
           console.log(error.response.data)
-          setNotificationMsg({msg:`${error.response.data}`, type: "remove"})
+          setNotificationMsg({msg:`${error.response.data.error}`, type: "remove"})
+          removeNotification()
         })
   }
   // update existing contact
