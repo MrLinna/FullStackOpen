@@ -44,6 +44,11 @@ const App = () => {
           setNotificationMsg({msg:`Added ${personObject.name}`, type: "add"})
           removeNotification()
         })
+        // added in exercise 3.19
+        .catch(error => {
+          console.log(error.response.data)
+          setNotificationMsg({msg:`${error.response.data}`, type: "remove"})
+        })
   }
   // update existing contact
   const updateContact=(personObject, oldContact)=>{
