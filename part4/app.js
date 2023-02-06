@@ -3,14 +3,9 @@ const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
 
-const blogSchema = mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-})
+const blogSchema = require('./models/blog')
+const mongoose = require('mongoose')
 
 
 const Blog = mongoose.model('Blog', blogSchema)
