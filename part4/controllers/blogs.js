@@ -9,17 +9,13 @@ blogsRouter.get('/', (request, response) => {
 
 
 
-
-/*
-  
-  app.post('/api/blogs', (request, response) => {
+  blogsRouter.post('/', (request, response) => {
     const blog = new Blog(request.body)
-  
     blog
       .save()
       .then(result => {
         response.status(201).json(result)
       })
-  })*/
+  })
 
   module.exports = blogsRouter
