@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const listHelper = require('../utils/list_helper')
 const blogs = [
   {
@@ -70,5 +71,17 @@ describe('favourite blog', () => {
       author: 'Edsger W. Dijkstra',
       likes: 12
     })
+  })
+})
+
+describe('most blogs', () => {
+  test('the author that has most blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(
+      {
+        author: "Robert C. Martin",
+        blogs: 3
+      }
+    )
   })
 })
