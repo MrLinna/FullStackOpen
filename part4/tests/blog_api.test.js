@@ -27,6 +27,32 @@ describe('identifier property of the blog posts is named id', () => {
     response.body.map(blog => expect(blog.id).toBeDefined())
   })
 })
+
+describe('successfully create a new blog post', () => {
+  test('POST request test', async () => {
+
+    const newBlog =
+    {
+      title: 'Antin ajatukset',
+      author: 'Antti Linna',
+      url: 'http://antinajatuksia.com',
+      likes: 537
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAfterPost = await api.get('/api/blogs')
+    expect(blogsAfterPost.body).toHaveLength(helper.initialBlogs.length + 1)
+
+    const blogTitles = blogsAfterPost.body.map(b => b.title)
+    expect(blogTitles).toContain('Antin ajatukset')
+  })
+
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
