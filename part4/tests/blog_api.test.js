@@ -74,6 +74,43 @@ describe('if the likes property is missing from the request, it will default to 
   })
 })
 
+describe('if the title or url properties are missing, respond is status code 400.', () => {
+  test('Blog without title/url is not added', async () => {
+    const noTitle = {
+      author: 'No title',
+      url: 'https://notitle.com/',
+      likes: 7
+    }
+    const noUrl = {
+      title: 'No url',
+      author: 'No Url',
+      likes: 7
+    }
+    const neither = {
+      author: 'Notitle Nourl',
+      likes: 7
+    }
+    await api
+      .post('/api/blogs')
+      .send(noTitle)
+      .expect(400)
+    await api
+      .post('/api/blogs')
+      .send(noUrl)
+      .expect(400)
+    await api
+      .post('/api/blogs')
+      .send(neither)
+      .expect(400)
+
+    const blogsAfterPost = await api.get('/api/blogs')
+    expect(blogsAfterPost.body).toHaveLength(helper.initialBlogs.length)
+  })
+})
+
+
+
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
