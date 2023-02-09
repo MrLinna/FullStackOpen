@@ -125,6 +125,60 @@ describe('deletion of a note', () => {
   })
 })
 
+describe('update of a note works as it should', () => {
+  test('test updating with valid id', async () => {
+    const BlogsAtStart = await api.get('/api/blogs')
+    const blogToUpdate = BlogsAtStart.body[0]
+    console.log('blogtoupdate: ', blogToUpdate )
+    const updatedBlog = {
+      title: 'päivitetty',
+      author: 'update test',
+      url: 'localhost:3001/api/blogs',
+      likes: 42,
+      id: blogToUpdate.id
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200)
+
+    const blogsAtEnd = await api.get('/api/blogs')
+    expect(blogsAtEnd.body).toHaveLength(
+      BlogsAtStart.body.length
+    )
+
+    const ids = blogsAtEnd.body.map(b => b.id)
+    expect(ids).toContain(blogToUpdate.id)
+    const afterUpdate = blogsAtEnd.body.filter(b => b.id === blogToUpdate.id)
+    expect(afterUpdate[0].title).toBe('päivitetty')
+
+  })
+
+  test('test returns status 400 if id is invalid', async () => {
+    const invalidId = '234832923'
+    const BlogsAtStart = await api.get('/api/blogs')
+
+    const updatedBlog = {
+      title: 'päivitetty',
+      author: 'update test',
+      url: 'localhost:3001/api/blogs',
+      likes: 42,
+      id: invalidId
+    }
+
+    await api
+      .put(`/api/blogs/${invalidId}`)
+      .send(updatedBlog)
+      .expect(400)
+
+    const blogsAtEnd = await api.get('/api/blogs')
+    expect(blogsAtEnd.body).toHaveLength(BlogsAtStart.body.length)
+
+  })
+
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
