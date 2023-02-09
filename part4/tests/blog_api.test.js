@@ -55,9 +55,7 @@ describe('successfully create a new blog post', () => {
 
 describe('if the likes property is missing from the request, it will default to the value 0', () => {
   test('default 0 test', async () => {
-
-    const nonLikesBlog =
-    {
+    const nonLikesBlog = {
       title: 'zero test',
       author: 'blog_api.test.js',
       url: 'http://randomurl.com',
@@ -108,8 +106,24 @@ describe('if the title or url properties are missing, respond is status code 400
   })
 })
 
+describe('deletion of a note', () => {
+  test('test that specific blog deletion works', async () => {
+    const BlogsAtStart = await api.get('/api/blogs')
+    const blogToDelete = BlogsAtStart.body[0]
 
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
 
+    const blogsAtEnd = await api.get('/api/blogs')
+    expect(blogsAtEnd.body).toHaveLength(
+      BlogsAtStart.body.length - 1
+    )
+
+    const titles = blogsAtEnd.body.map(r => r.title)
+    expect(titles).not.toContain(blogToDelete.content)
+  })
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
