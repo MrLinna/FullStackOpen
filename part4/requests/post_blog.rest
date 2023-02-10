@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "päivitettävä",
-    "author": "Test author",
-    "url": "test url",
-    "likes": 200
+    "title": "New impressive way to impress",
+    "author": "Ban Gibralt",
+    "url": "https://www.google.com",
+    "likes": 0,
+    "userId": "63e6367d72ed2f2c3d370b6b"
 }

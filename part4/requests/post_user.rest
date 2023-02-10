@@ -2,7 +2,7 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "uölkjhy",
-    "name": "2nd test from restapi",
-    "password": "kdd"
+    "username": "mluukkai",
+    "name": "Matti Luukkainen",
+    "password": "salainen"
 }
