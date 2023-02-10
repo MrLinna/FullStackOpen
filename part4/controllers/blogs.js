@@ -10,7 +10,6 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-
 blogsRouter.post('/', async (request, response) => {
 
   const body = request.body
