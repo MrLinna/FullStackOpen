@@ -37,7 +37,23 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+  if (!request.token || !decodedToken.id) {
+    return request.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+  const blogToDelete = await Blog.findById(request.params.id)
+  if (!blogToDelete) {
+    console.log('blog does not exist')
+    return response.status(404).json({ error: 'blog does not exist' })
+  }
+  if (blogToDelete.user.toString() !== user._id.toString()) {
+    return response.status(401).json({ error: 'Not authorized' })
+  }
+
+  await blogToDelete.remove()
   response.status(204).end()
 })
 
