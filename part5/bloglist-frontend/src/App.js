@@ -10,11 +10,20 @@ const App = () => {
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
 
+  useEffect(() => {
+    blogService
+      .getAll().then(initialBlogs => {
+        setBlogs(initialBlogs)
+      })
+  }, [])
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
   }, [])
 
   const handleLogin = async (event) => {
@@ -24,9 +33,12 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
+
     } catch (exception) {
       console.log('wrong credentials')
     }
@@ -35,13 +47,11 @@ const App = () => {
     return (
       <>
       {!user && <LoginForm  handleLogin = {handleLogin} 
-                            username = {username} 
-                            setUsername = {setUsername} 
-                            password = {password} 
-                            setPassword = {setPassword}/>
+                            username = {username} setUsername = {setUsername} 
+                            password = {password} setPassword = {setPassword}/>
       }
 
-      {user && <BlogForm blogs = {blogs} user ={user}/>}
+      {user && <BlogForm blogs = {blogs} setBlogs = {setBlogs} user = {user} setUser = {setUser} />}
       </>
     )
   
