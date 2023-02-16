@@ -11,7 +11,7 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogsRouter.post('/', userExtractor,async (request, response) => {
+blogsRouter.post('/', userExtractor, async (request, response) => {
 
   const body = request.body
   const decodedToken = jwt.verify(request.token, process.env.SECRET)

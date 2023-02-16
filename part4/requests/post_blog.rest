@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer
 
 {
-    "title": "days after light",
-    "author": "Ban Gibralt",
+    "title": "Test 2",
+    "author": "qwerty qwerty",
     "url": "https://www.google.com",
-    "likes": 0,
-    "userId": "63e6367d72ed2f2c3d370b6b"
+    "likes": 0
 }
