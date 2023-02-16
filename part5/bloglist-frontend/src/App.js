@@ -4,11 +4,15 @@ import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
+  const [notificationMsg, setNotificationMsg] = useState(null)
+
 
   useEffect(() => {
     blogService
@@ -39,8 +43,12 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-    } catch (exception) {
-      console.log('wrong credentials')
+    } catch (error) {
+      setNotificationMsg(`wrong username or password`)
+      setTimeout(() => {
+        setNotificationMsg(null)
+      }, 5000)
+      
     }
   }
 
@@ -48,10 +56,17 @@ const App = () => {
       <>
       {!user && <LoginForm  handleLogin = {handleLogin} 
                             username = {username} setUsername = {setUsername} 
-                            password = {password} setPassword = {setPassword}/>
+                            password = {password} setPassword = {setPassword}
+                            notificationMsg={notificationMsg}/>
       }
 
-      {user && <BlogForm blogs = {blogs} setBlogs = {setBlogs} user = {user} setUser = {setUser} />}
+      {user && <BlogForm  blogs = {blogs} 
+                          setBlogs = {setBlogs} 
+                          user = {user} 
+                          setUser = {setUser}
+                          notificationMsg={notificationMsg}
+                          setNotificationMsg = {setNotificationMsg}/>
+      }
       </>
     )
   
