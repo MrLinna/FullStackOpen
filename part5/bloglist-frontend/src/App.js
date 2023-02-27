@@ -53,13 +53,15 @@ const App = () => {
     }
   }
 
-  const addBlog = (noteObject) => {
-    // blogFormRef.current.toggleVisibility is not a function
+  const addBlog = (blogObject) => {
+    console.log('blogobject', blogObject)
+    // Error: blogFormRef.current.toggleVisibility is not a function
     blogFormRef.current()//.toggleVisibility() //this works for some reason.
     blogService
-      .create(noteObject)
+      .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        console.log('returned blog', returnedBlog)
         setNotificationMsg(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
         setTimeout(() => {
           setNotificationMsg(null)
