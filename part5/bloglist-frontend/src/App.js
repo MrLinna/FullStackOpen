@@ -14,6 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notificationMsg, setNotificationMsg] = useState(null)
   const blogFormRef = useRef()
+  const [notificationColor, setNotificationColor] = useState('green')
 
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const App = () => {
       setPassword('')
       } 
     catch (error) {
+      setNotificationColor("red")
       setNotificationMsg(`wrong username or password`)
       setTimeout(() => {
         setNotificationMsg(null)
@@ -59,8 +61,29 @@ const App = () => {
     const likedBlog = {...blogToUpdate, likes: blogToUpdate.likes + 1}
     const updatedBlog = await blogService.update(id, likedBlog)
     setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog).sort((a,b)=> b.likes - a.likes))
+  }
 
-    
+  const deleteBlog = async (id) => {
+    const blogToDelete = blogs.find(b => b.id === id)
+    if(window.confirm(`Remove blog '${blogToDelete.title}' by '${blogToDelete.author}'?`)) {
+      try {
+        await blogService.remove(id)
+        setBlogs(blogs.filter(b => b.id !== id).sort((a,b)=> b.likes - a.likes))
+        setNotificationColor('green')
+        setNotificationMsg('blog deleted successfully')
+        setTimeout(() => {
+          setNotificationMsg(null)
+        }, 5000)
+
+      } catch (error) {
+        setNotificationColor('red')
+        setNotificationMsg('Something went wrong while deleting blog.')
+        setTimeout(() => {
+          setNotificationMsg(null)
+        }, 5000);
+      }
+
+    }
   }
 
 
@@ -73,6 +96,7 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog).sort((a,b)=> b.likes - a.likes))
         console.log('returned blog', returnedBlog)
+        setNotificationColor('green')
         setNotificationMsg(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
         setTimeout(() => {
           setNotificationMsg(null)
@@ -88,11 +112,10 @@ const App = () => {
       {!user && 
       <>
         <h2>Log in to application</h2>
-        <Notification message={notificationMsg} msgColor = 'red'/>
+        <Notification message={notificationMsg} msgColor = {notificationColor}/>
         <LoginForm  handleLogin = {handleLogin} 
                     username = {username} setUsername = {setUsername} 
-                    password = {password} setPassword = {setPassword}
-                    />
+                    password = {password} setPassword = {setPassword}/>
       </>
       }
 
@@ -100,7 +123,7 @@ const App = () => {
       
         <>
           <h2>blogs</h2>
-          <Notification message={notificationMsg} msgColor = 'green'/>
+          <Notification message={notificationMsg} msgColor = {notificationColor}/>
           <p>
             {user.name} logged in
             <button onClick={logout}>logout</button>
@@ -108,7 +131,7 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref = {blogFormRef}>
             <BlogForm  CreateBlog = {addBlog}/>
           </Togglable>
-          {blogs.map(blog => <Blog key={blog.id} blog={blog} handleLike={handleLike} />)}
+          {blogs.map(blog => <Blog key = {blog.id} blog = {blog} handleLike = {handleLike} removeBlog = {deleteBlog} user = {user}/>)}
         </>
         
         
