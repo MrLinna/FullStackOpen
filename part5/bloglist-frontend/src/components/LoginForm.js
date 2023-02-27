@@ -1,29 +1,12 @@
 
-import Notification from "./Notification"
-const LoginForm = ({handleLogin, username, setUsername, password, setPassword, notificationMsg, setNotificationMsg}) => {
+import Input from "./Input"
+const LoginForm = ({handleLogin, username, setUsername, password, setPassword}) => {
   return(
     <>  
-      <h2>Log in to application</h2>
-      <Notification message={notificationMsg} msgColor = 'red'/>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type= "text"
-            value= {username}
-            name= "Username"
-            onChange={({ target }) => setUsername(target.value)} />
-        </div>
 
-        <div>
-          password
-          <input
-            type= "password"
-            value= {password}
-            name= "Password"
-            onChange={({ target }) => setPassword(target.value)} />
-        </div>
-        
+      <form onSubmit={handleLogin}>
+        <Input text = "username" value = {username} onChange={({ target }) => setUsername(target.value)}/>
+        <Input text = "password" value = {password} onChange={({ target }) => setPassword(target.value)}/>
         <button type="submit">login</button>
       </form>
     </> 

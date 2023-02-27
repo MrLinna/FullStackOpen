@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
-import BlogForm from './components/BlogForm'
+import { useState, useEffect, useRef } from 'react'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
-
-
+import Notification from "./components/Notification"
+import Togglable from "./components/Togglable"
+import Blog from "./components/Blog"
+import BlogForm from "./components/BlogForm"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,11 +13,13 @@ const App = () => {
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
   const [notificationMsg, setNotificationMsg] = useState(null)
+  const blogFormRef = useRef()
 
 
   useEffect(() => {
     blogService
-      .getAll().then(initialBlogs => {
+      .getAll()
+      .then(initialBlogs => {
         setBlogs(initialBlogs)
       })
   }, [])
@@ -32,40 +35,71 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
-
-    } catch (error) {
+      } 
+    catch (error) {
       setNotificationMsg(`wrong username or password`)
       setTimeout(() => {
         setNotificationMsg(null)
       }, 5000)
-      
     }
   }
 
+  const addBlog = (noteObject) => {
+    // blogFormRef.current.toggleVisibility is not a function
+    blogFormRef.current()//.toggleVisibility() //this works for some reason.
+    blogService
+      .create(noteObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNotificationMsg(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+        setTimeout(() => {
+          setNotificationMsg(null)
+        }, 5000)
+      })
+  }
+  const logout = () => {
+    window.localStorage.clear()
+    setUser(null)
+  }
     return (
       <>
-      {!user && <LoginForm  handleLogin = {handleLogin} 
-                            username = {username} setUsername = {setUsername} 
-                            password = {password} setPassword = {setPassword}
-                            notificationMsg={notificationMsg}/>
+      {!user && 
+      <>
+        <h2>Log in to application</h2>
+        <Notification message={notificationMsg} msgColor = 'red'/>
+        <LoginForm  handleLogin = {handleLogin} 
+                    username = {username} setUsername = {setUsername} 
+                    password = {password} setPassword = {setPassword}
+                    />
+      </>
       }
 
-      {user && <BlogForm  blogs = {blogs} 
-                          setBlogs = {setBlogs} 
-                          user = {user} 
-                          setUser = {setUser}
-                          notificationMsg={notificationMsg}
-                          setNotificationMsg = {setNotificationMsg}/>
+      {user && 
+      
+        <>
+          <h2>blogs</h2>
+          <Notification message={notificationMsg} msgColor = 'green'/>
+          <p>
+            {user.name} logged in
+            <button onClick={logout}>logout</button>
+          </p>
+          <Togglable buttonLabel="new blog" ref = {blogFormRef}>
+            <BlogForm  CreateBlog = {addBlog}/>
+          </Togglable>
+          {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+        </>
+        
+        
+        
       }
       </>
     )
@@ -75,5 +109,4 @@ const App = () => {
 
 
 export default App
-
 

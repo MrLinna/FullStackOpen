@@ -1,30 +1,55 @@
-import Blog from "./Blog"
-import CreateBlog from './CreateBlog'
-import Notification from "./Notification"
+
+import { useState } from "react"
+
+import Input from "./Input"
 
 
-const BlogForm =({blogs, setBlogs, user, setUser, notificationMsg, setNotificationMsg})=> {
+const BlogForm = ({ CreateBlog }) => {
 
-  const logout = () => {
-    window.localStorage.clear()
-    setUser(null)
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
+
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    CreateBlog({
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl
+    })
+
+    setNewTitle('')
+    setNewAuthor('')
+    setNewUrl('')
+
   }
-    return (
-      <div>
-        <h2>blogs</h2>
-        <Notification message={notificationMsg} msgColor = 'green'/>
 
-        <p>
-          {user.name} logged in
-          <button onClick={logout}>logout</button>
-        </p>
-        <CreateBlog blogs = {blogs} setBlogs ={setBlogs} 
-                    notificationMsg={notificationMsg}
-                    setNotificationMsg = {setNotificationMsg}/>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
-      </div>
-    )
-  }
+  return (
+    <div>
+      <h2>create new</h2>
+
+      <form onSubmit={addBlog}>
+        <Input
+          text = "title: "
+          value={newTitle}
+          onChange={event => setNewTitle(event.target.value)}
+        />
+        <Input
+          text = "author: "
+          value={newAuthor}
+          onChange={event => setNewAuthor(event.target.value)}
+        />
+        <Input
+          text = "url: "
+          value={newUrl}
+          onChange={event => setNewUrl(event.target.value)}
+        />
+        <button type="submit">create</button>
+      </form>
+    </div>
+  )
+}
+
+
 export default BlogForm
