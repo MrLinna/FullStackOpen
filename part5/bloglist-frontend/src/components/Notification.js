@@ -1,4 +1,5 @@
 const Notification = ({ message, msgColor }) => {
+  
   const notificationStyle = {
     color: msgColor,
     background: 'lightgrey',
