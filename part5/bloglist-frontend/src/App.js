@@ -20,7 +20,7 @@ const App = () => {
     blogService
       .getAll()
       .then(initialBlogs => {
-        setBlogs(initialBlogs)
+        setBlogs(initialBlogs.sort((a,b)=> b.likes - a.likes))
       })
   }, [])
 
@@ -58,7 +58,9 @@ const App = () => {
     const blogToUpdate = blogs.find(e => e.id === id)
     const likedBlog = {...blogToUpdate, likes: blogToUpdate.likes + 1}
     const updatedBlog = await blogService.update(id, likedBlog)
-    setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog))
+    setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog).sort((a,b)=> b.likes - a.likes))
+
+    
   }
 
 
@@ -69,7 +71,7 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+        setBlogs(blogs.concat(returnedBlog).sort((a,b)=> b.likes - a.likes))
         console.log('returned blog', returnedBlog)
         setNotificationMsg(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
         setTimeout(() => {
