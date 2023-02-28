@@ -28,7 +28,7 @@ const Blog = ({ blog, handleLike, removeBlog, user }) => {
         {blog.url}
         <br />
         Likes {blog.likes}
-        <button onClick={ () => handleLike(blog.id) }>like</button>
+        <button id='likeButton' onClick={ () => handleLike(blog.id) }>like</button>
         <br />
         blog.user.name
         <br />

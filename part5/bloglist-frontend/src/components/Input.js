@@ -1,5 +1,5 @@
 
-const Input =({ value, onChange, text }) => {
+const Input =({ value, onChange, text, placeHolder }) => {
   if (text === 'password')
     return(
       <div>
@@ -18,6 +18,7 @@ const Input =({ value, onChange, text }) => {
         <input
           value={value}
           onChange={onChange}
+          placeholder= {placeHolder ? placeHolder : <></>}
         />
       </div>
     )
