@@ -1,8 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
-import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
+import Blog from './Blog'
 
 
 describe('<Blog /> tests', () => {
@@ -17,9 +17,11 @@ describe('<Blog /> tests', () => {
       url: 'http://localhost:3000'
     }
     const user = { username: 'MrLinna' }
+    const removeBlog = () => console.log('remove blog')
+    const handleLike = () => console.log('handle like')
 
     container = render(
-      <Blog blog={blog} user = {user}/>
+      <Blog blog={blog} user = {user} removeBlog = {removeBlog} handleLike = {handleLike}/>
     ).container
   })
 
@@ -32,16 +34,20 @@ describe('<Blog /> tests', () => {
   })
 
 
-/*
+
   test('exercise 5.14: renders also url and likes when show-button has been clicked', async () => {
     const user = userEvent.setup()
     const button = screen.getByText('view')
     await user.click(button)
 
-
-
     const div = container.querySelector('.infoVisible')
-    expect(div).not.toHaveStyle('display: none')
+    const titleAndAuthor = screen.getByText('exercise 5.13 fullstackopen part5')
+    const url = screen.getByText('http://localhost:3000', { exact : false })
+    const likes = screen.getByText('likes 1', { exact : false })
 
-  })*/
+    expect(div).not.toHaveStyle('display: none')
+    expect(titleAndAuthor).toBeDefined()
+    expect(url).toBeDefined()
+    expect(likes).toBeDefined()
+  })
 })
