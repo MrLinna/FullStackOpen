@@ -1,15 +1,12 @@
 
 import { useState } from 'react'
-
 import Input from './Input'
-
 
 const BlogForm = ({ CreateBlog }) => {
 
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
-
 
   const addBlog = (event) => {
     event.preventDefault()
