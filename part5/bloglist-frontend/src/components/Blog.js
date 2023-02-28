@@ -1,5 +1,7 @@
-import { useState } from "react"
-const Blog = ({blog, handleLike, removeBlog, user}) => {
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+
+const Blog = ({ blog, handleLike, removeBlog, user }) => {
 
 
   const [visible, setVisible] = useState(false)
@@ -13,41 +15,46 @@ const Blog = ({blog, handleLike, removeBlog, user}) => {
   }
   return (
     <>
-    {(!visible) && 
+      {(!visible) &&
       <div style={blogStyle}>
-          <div> 
-            {blog.title} {blog.author}
-            <button onClick={()=>setVisible(true)}>view</button>
-          </div>
+        <div>
+          {blog.title} {blog.author}
+          <button onClick={() => setVisible(true)}>view</button>
+        </div>
       </div>
-    }
-    {(visible) && 
+      }
+      {(visible) &&
       <div style={blogStyle}>
-          <div> 
-            {blog.title} {blog.author}
-            <button onClick={()=>setVisible(false)}>hide</button>
-          </div>
-          <div>
-            {blog.url}
-          </div>
-          <div>
+        <div>
+          {blog.title} {blog.author}
+          <button onClick={() => setVisible(false)}>hide</button>
+        </div>
+        <div>
+          {blog.url}
+        </div>
+        <div>
             likes {blog.likes} <button onClick={ () => handleLike(blog.id) }>like</button>
-          </div>
-          <div>
-            {blog.user.name}
-          </div>
-          <div>
-            {user.username.toString() === blog.user.username.toString()
-              ? <button onClick={ () => removeBlog(blog.id) }>remove</button>
-              : null
-            }
-          </div>
+        </div>
+        <div>
+          {blog.user.name}
+        </div>
+        <div>
+          {user.username.toString() === blog.user.username.toString()
+            ? <button onClick={ () => removeBlog(blog.id) }>remove</button>
+            : null
+          }
+        </div>
       </div>
-    }
+      }
     </>
   )
 }
 
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+}
+
 export default Blog
-/*
-*/

@@ -1,6 +1,6 @@
 
-const Input =({value, onChange, text})=>{
-  if (text === "password") 
+const Input =({ value, onChange, text }) => {
+  if (text === 'password')
     return(
       <div>
         {text}
@@ -22,9 +22,6 @@ const Input =({value, onChange, text})=>{
       </div>
     )
   }
-  
-  
-  
-  }
+}
 
-  export default Input
+export default Input

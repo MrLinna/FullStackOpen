@@ -35,5 +35,5 @@ const remove = async ( id ) => {
 }
 
 
-// eslint-disable-next-line import/no-anonymous-default-export
+// eslint-disable-next-line
 export default { getAll, create, setToken, update, remove }

@@ -1,16 +1,17 @@
+/* eslint-disable arrow-spacing */
 import { useState, useEffect, useRef } from 'react'
 import LoginForm from './components/LoginForm'
-import Notification from "./components/Notification"
-import Togglable from "./components/Togglable"
-import Blog from "./components/Blog"
-import BlogForm from "./components/BlogForm"
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notificationMsg, setNotificationMsg] = useState(null)
   const blogFormRef = useRef()
@@ -21,7 +22,7 @@ const App = () => {
     blogService
       .getAll()
       .then(initialBlogs => {
-        setBlogs(initialBlogs.sort((a,b)=> b.likes - a.likes))
+        setBlogs(initialBlogs.sort((a,b) => b.likes - a.likes))
       })
   }, [])
 
@@ -33,7 +34,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-  
+
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -46,10 +47,10 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      } 
+    }
     catch (error) {
-      setNotificationColor("red")
-      setNotificationMsg(`wrong username or password`)
+      setNotificationColor('red')
+      setNotificationMsg('wrong username or password')
       setTimeout(() => {
         setNotificationMsg(null)
       }, 5000)
@@ -58,9 +59,9 @@ const App = () => {
 
   const handleLike = async (id) => {
     const blogToUpdate = blogs.find(e => e.id === id)
-    const likedBlog = {...blogToUpdate, likes: blogToUpdate.likes + 1}
+    const likedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
     const updatedBlog = await blogService.update(id, likedBlog)
-    setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog).sort((a,b)=> b.likes - a.likes))
+    setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog).sort((a,b) => b.likes - a.likes))
   }
 
   const deleteBlog = async (id) => {
@@ -68,7 +69,7 @@ const App = () => {
     if(window.confirm(`Remove blog '${blogToDelete.title}' by '${blogToDelete.author}'?`)) {
       try {
         await blogService.remove(id)
-        setBlogs(blogs.filter(b => b.id !== id).sort((a,b)=> b.likes - a.likes))
+        setBlogs(blogs.filter(b => b.id !== id).sort((a,b) => b.likes - a.likes))
         setNotificationColor('green')
         setNotificationMsg('blog deleted successfully')
         setTimeout(() => {
@@ -80,7 +81,7 @@ const App = () => {
         setNotificationMsg('Something went wrong while deleting blog.')
         setTimeout(() => {
           setNotificationMsg(null)
-        }, 5000);
+        }, 5000)
       }
 
     }
@@ -107,20 +108,20 @@ const App = () => {
     window.localStorage.clear()
     setUser(null)
   }
-    return (
-      <>
-      {!user && 
+  return (
+    <>
+      {!user &&
       <>
         <h2>Log in to application</h2>
         <Notification message={notificationMsg} msgColor = {notificationColor}/>
-        <LoginForm  handleLogin = {handleLogin} 
-                    username = {username} setUsername = {setUsername} 
-                    password = {password} setPassword = {setPassword}/>
+        <LoginForm  handleLogin = {handleLogin}
+          username = {username} setUsername = {setUsername}
+          password = {password} setPassword = {setPassword}/>
       </>
       }
 
-      {user && 
-      
+      {user &&
+
         <>
           <h2>blogs</h2>
           <Notification message={notificationMsg} msgColor = {notificationColor}/>
@@ -133,13 +134,10 @@ const App = () => {
           </Togglable>
           {blogs.map(blog => <Blog key = {blog.id} blog = {blog} handleLike = {handleLike} removeBlog = {deleteBlog} user = {user}/>)}
         </>
-        
-        
-        
       }
-      </>
-    )
-  
+    </>
+  )
+
 }
 
 
