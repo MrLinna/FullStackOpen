@@ -125,10 +125,10 @@ const App = () => {
         <>
           <h2>blogs</h2>
           <Notification message={notificationMsg} msgColor = {notificationColor}/>
-          <p>
+          <div>
             {user.name} logged in
             <button onClick={logout}>logout</button>
-          </p>
+          </div>
           <Togglable buttonLabel="new blog" ref = {blogFormRef}>
             <BlogForm  CreateBlog = {addBlog}/>
           </Togglable>

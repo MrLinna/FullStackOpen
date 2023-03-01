@@ -1,5 +1,5 @@
 
-const Input =({ value, onChange, text, placeHolder }) => {
+const Input =({ value, onChange, text, placeHolder, ID }) => {
   return(
     <div>
       {text}
@@ -8,6 +8,7 @@ const Input =({ value, onChange, text, placeHolder }) => {
         onChange={onChange}
         type = { text === 'password' ? 'password' : null }
         placeholder = {placeHolder ? placeHolder : null}
+        id = {ID ? ID : null}
       />
     </div>
   )
