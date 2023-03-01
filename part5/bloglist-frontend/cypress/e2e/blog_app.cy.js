@@ -97,4 +97,34 @@ describe('Blog app', function() {
     })
 
   })
+  describe('When there a few blogs in list', function() {
+    beforeEach(function() {
+      cy.login({ username: 'mluukkai', password: 'salainen' })
+      cy.createBlog({ title: 'The title with the third most likes', author: 'Author', url: 'url3' })
+      cy.createBlog({ title: 'The title with the second most likes', author: 'author', url: 'url2' })
+      cy.createBlog({ title: 'The title with the most likes', author: 'AUTHOR', url: 'url1' })
+    })
+
+    it.only('the blogs are sorted by the number of likes', function() {
+      cy.get('.blog').eq(0).should('contain', 'The title with the third most likes').find('#viewButton').click()
+      cy.get('.blog').eq(1).should('contain', 'The title with the second most likes').find('#viewButton').click()
+      cy.get('.blog').eq(2).should('contain', 'The title with the most likes').find('#viewButton').click()
+
+
+      cy.get('.blog').eq(1).should('contain', 'The title with the second most likes').find('#likeButton').click()
+      cy.get('.blog').eq(0).should('contain', 'The title with the second most likes')
+
+
+      cy.get('.blog').eq(2).should('contain', 'The title with the most likes').find('#likeButton').click()
+      cy.get('.blog').eq(1).should('contain', 'The title with the most likes')
+
+      cy.get('.blog').eq(1).should('contain', 'The title with the most likes').find('#likeButton').click()
+      cy.get('.blog').eq(0).should('contain', 'The title with the most likes')
+
+
+      cy.get('.blog').eq(0).should('contain', 'The title with the most likes')
+      cy.get('.blog').eq(1).should('contain', 'The title with the second most likes')
+      cy.get('.blog').eq(2).should('contain', 'The title with the third most likes')
+    })
+  })
 })
