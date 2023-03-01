@@ -21,6 +21,7 @@ describe('<BlogForm /> tests', () => {
     const authorInput = screen.getByPlaceholderText('write author here')
     const urlInput = screen.getByPlaceholderText('write url here')
 
+
     await user.type(titleInput, 'Test Title')
     await user.type(authorInput, 'test author')
     await user.type(urlInput, 'test url')
