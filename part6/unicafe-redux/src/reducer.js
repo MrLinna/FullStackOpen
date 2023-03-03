@@ -17,7 +17,7 @@ const initialState = {
       case 'OK':
         const incrementedNeutral = {
           ...state,
-          ok: state.good + 1
+          ok: state.ok + 1
         }
         return incrementedNeutral
 
@@ -27,9 +27,10 @@ const initialState = {
           bad: state.bad + 1
         }
         return incrementedNegative
+
       case 'ZERO':
         return initialState
-        
+
       default: return state
     }
   
