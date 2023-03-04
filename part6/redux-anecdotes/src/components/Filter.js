@@ -7,8 +7,7 @@ const Filter = () => {
     const dispatch = useDispatch()
 
     const handleChange = (event) => {
-
-        dispatch(filterChange(event.target.value))
+      dispatch(filterChange(event.target.value))
     }
     const style = {
       marginBottom: 10
