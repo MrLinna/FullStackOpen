@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const Anecdote = ({ id, content, votes, handleClick }) => {
     return(
-        <div key={id}>
+        <div key={ id }>
             <div>
-                {content}
+                { content }
             </div>
             <div>
-                has {votes}
-                <button onClick={() => handleClick }>vote</button>
+                has { votes }
+                <button onClick={ handleClick }>vote</button>
             </div>
         </div> 
     )
@@ -22,16 +22,16 @@ const AnecdoteList = () => {
     const filteredAnecdotes = useSelector(({ filter, anecdotes }) => {
         return filter === '' ?  anecdotes : anecdotes.filter( a => a.content.toLowerCase().includes(filter.toLowerCase()) )
       })
-  
+    
     return(  
     <div>
-        {filteredAnecdotes.map(anecdote =>
+        {filteredAnecdotes.map(each =>
             <Anecdote 
-                key={anecdote.id}
-                id = {anecdote.id}
-                content = {anecdote.content}
-                votes={anecdote.votes}
-                handleClick = {()=> dispatch(giveVote(anecdote.id))}
+                key = {each.id}
+                id = {each.id}
+                content = {each.content}
+                votes = {each.votes}
+                handleClick = {() => dispatch(giveVote(each.id))}
             />
         )}
     </div>
