@@ -27,9 +27,8 @@ const AnecdoteList = () => {
         dispatch(giveVote(id))
         dispatch(showNotification( `you voted '${text}'` ))
         setTimeout (() => dispatch(hideNotification()), 5000)
-
-        
     }
+    
     return(
     <div>
         {filteredAnecdotes.map(each =>
