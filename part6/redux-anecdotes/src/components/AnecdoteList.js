@@ -23,9 +23,10 @@ const AnecdoteList = () => {
     const filteredAnecdotes = useSelector(({ filter, anecdotes }) => {
         return filter === '' ?  anecdotes : anecdotes.filter( a => a.content.toLowerCase().includes(filter.toLowerCase()) )
       })
-    const handleClick = (id, text) => {
-        dispatch(giveVote(id))
-        dispatch(showNotification( `you voted '${text}'` ))
+      
+    const handleClick = (anecdote) => {
+        dispatch(giveVote(anecdote))
+        dispatch(showNotification( `you voted '${anecdote.content}'` ))
         setTimeout (() => dispatch(hideNotification()), 5000)
     }
     
@@ -37,7 +38,7 @@ const AnecdoteList = () => {
                 id = {each.id}
                 content = {each.content}
                 votes = {each.votes}
-                handleClick = {() => handleClick(each.id, each.content)}
+                handleClick = {() => handleClick(each)}
             />
         )}
     </div>
