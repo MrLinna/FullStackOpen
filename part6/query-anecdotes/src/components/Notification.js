@@ -1,4 +1,4 @@
-import { useNotification, useNotificationDispatch } from "./NotificationContext"
+import { useNotification } from "./NotificationContext"
 const Notification = () => {
   const style = {
     border: 'solid',
