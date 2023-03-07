@@ -9,14 +9,11 @@ const App = () => {
     console.log('vote')
   }
 
- 
-
   const result = useQuery('anecdotes', getAnecdotes, { retry: false, refetchOnWindowFocus: false })
     
   if ( result.isLoading || result.isError){
     return <div>anecdote service note available due to problems in server</div>
   }
-
 
   const anecdotes = result.data
 
