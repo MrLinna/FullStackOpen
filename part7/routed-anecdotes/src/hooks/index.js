@@ -18,8 +18,3 @@ export const useField = (type) => {
     reset
   }
 }
-
-// moduulissa voi olla monta nimettyä eksportia
-export const useAnotherHook = () => {
-  // ...
-}
