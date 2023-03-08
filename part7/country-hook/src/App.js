@@ -21,7 +21,7 @@ const useCountry = (name) => {
     if (name !== ''){
       axios
         .get(`https://restcountries.com/v2/name/${name}?fullText=true`)
-        .then(res => setCountry({ data:res.data[0], found:true }))
+        .then(res => setCountry({ data: res.data[0], found: true }))
         .catch((error) => setCountry({data: null, found: false}))
     }
   },[name])
