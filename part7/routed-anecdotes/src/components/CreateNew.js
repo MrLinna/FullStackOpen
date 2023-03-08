@@ -21,7 +21,13 @@ const CreateNew = (props) => {
     setTimeout(() => {
       props.setNotification(null)
     }, 5000)
+  }
 
+  const handleReset = (event) => {
+    event.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -29,14 +35,16 @@ const CreateNew = (props) => {
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         content
-        <input { ...content } />
+        <input value={content.value} type={content.type} onChange={content.onChange}/>
         <br />
         author
-        <input { ...author } />
+        <input value={author.value} type={author.type} onChange={author.onChange}/>
         <br />
         url for more info
-        <input { ...info } />
+        <input value={info.value} type={info.type} onChange={info.onChange} />
+        <br />
         <button>create</button>
+        <button onClick={handleReset} >reset</button>
       </form>
     </div>
   )
