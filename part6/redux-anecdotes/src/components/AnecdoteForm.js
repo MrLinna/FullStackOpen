@@ -3,7 +3,7 @@ import { newAnecdote } from '../reducers/anecdoteReducer'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
-  
+
   const addAnecdote = async (event) => {
     event.preventDefault()
     const text = event.target.anecdote.value

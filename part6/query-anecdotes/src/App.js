@@ -6,41 +6,41 @@ import { useNotificationDispatch } from './components/NotificationContext'
 
 const App = () => {
   const queryClient = useQueryClient()
-  
-  const updateAnecdoteMutation = useMutation( updateAnecdote, { 
+
+  const updateAnecdoteMutation = useMutation( updateAnecdote, {
     onSuccess: () => {
       queryClient.invalidateQueries('anecdotes')
-    } 
+    }
   })
   const dispatch = useNotificationDispatch()
 
 
   const handleVote = (anecdote) => {
-    updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes + 1 })
-    
-    dispatch ({type: 'SHOW', payload: `you voted '${anecdote.content}' `})
+    updateAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
+
+    dispatch ({ type: 'SHOW', payload: `you voted '${anecdote.content}' ` })
     setTimeout(() => {
-      dispatch({type: 'HIDE'})
+      dispatch({ type: 'HIDE' })
     }, 5000)
 
   }
 
 
   const result = useQuery('anecdotes', getAnecdotes, { retry: false, refetchOnWindowFocus: false })
-    
+
   if ( result.isLoading || result.isError){
     return <div>anecdote service note available due to problems in server</div>
   }
 
-  const anecdotes = result.data.sort((a,b)=>b.votes-a.votes)
+  const anecdotes = result.data.sort((a,b) => b.votes-a.votes)
 
   return (
     <div>
       <h3>Anecdote app</h3>
-    
+
       <Notification />
       <AnecdoteForm />
-    
+
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>

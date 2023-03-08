@@ -1,14 +1,13 @@
-import { type } from '@testing-library/user-event/dist/type'
 import { createContext, useReducer, useContext } from 'react'
 
 const notificationReducer = (state, action) => {
   switch (action.type) {
-    case "SHOW":
-        return action.payload
-    case "HIDE":
-        return null
-    default:
-        return state
+  case 'SHOW':
+    return action.payload
+  case 'HIDE':
+    return null
+  default:
+    return state
   }
 }
 

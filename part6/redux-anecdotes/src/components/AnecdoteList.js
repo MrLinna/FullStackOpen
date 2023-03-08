@@ -3,43 +3,43 @@ import { useSelector, useDispatch } from 'react-redux'
 
 
 const Anecdote = ({ id, content, votes, handleClick }) => {
-    return(
-        <div key={ id }>
-            <div>
-                { content }
-            </div>
-            <div>
+  return(
+    <div key={ id }>
+      <div>
+        { content }
+      </div>
+      <div>
                 has { votes }
-                <button onClick={ handleClick }>vote</button>
-            </div>
-        </div> 
-    )
+        <button onClick={ handleClick }>vote</button>
+      </div>
+    </div>
+  )
 }
 
 
 const AnecdoteList = () => {
-    const dispatch = useDispatch()
-    const filteredAnecdotes = useSelector(({ filter, anecdotes }) => {
-        return filter === '' ?  anecdotes : anecdotes.filter( a => a.content.toLowerCase().includes(filter.toLowerCase()) )
-      })
+  const dispatch = useDispatch()
+  const filteredAnecdotes = useSelector(({ filter, anecdotes }) => {
+    return filter === '' ?  anecdotes : anecdotes.filter( a => a.content.toLowerCase().includes(filter.toLowerCase()) )
+  })
 
-    const handleClick = (anecdote) => {
-        dispatch(giveVote(anecdote))
-    }
-    
-    return(
+  const handleClick = (anecdote) => {
+    dispatch(giveVote(anecdote))
+  }
+
+  return(
     <div>
-        {filteredAnecdotes.map(each =>
-            <Anecdote 
-                key = {each.id}
-                id = {each.id}
-                content = {each.content}
-                votes = {each.votes}
-                handleClick = {() => handleClick(each)}
-            />
-        )}
+      {filteredAnecdotes.map(each =>
+        <Anecdote
+          key = {each.id}
+          id = {each.id}
+          content = {each.content}
+          votes = {each.votes}
+          handleClick = {() => handleClick(each)}
+        />
+      )}
     </div>
-    )
+  )
 }
 
 

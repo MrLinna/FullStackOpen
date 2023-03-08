@@ -10,10 +10,9 @@ const notificationSlice = createSlice({
       return action.payload
     },
 
-    hideNotification(state, action) { 
-      return null 
+    hideNotification(state, action) {
+      return null
     }
-
   }
 })
 

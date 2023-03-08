@@ -6,7 +6,7 @@ const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState: [],
   reducers: {
-    
+
     updateAnecdote(state, action){
       //console.log('give a vote', JSON.parse(JSON.stringify(state)))
       const updated = action.payload
@@ -44,7 +44,7 @@ export const newAnecdote = text => {
 
 export const giveVote = (anecdoteToVote) => {
   return async dispatch => {
-    const votedAnecdote = {...anecdoteToVote, votes: anecdoteToVote.votes + 1}
+    const votedAnecdote = { ...anecdoteToVote, votes: anecdoteToVote.votes + 1 }
     const upDated = await anecdoteService.update(anecdoteToVote.id, votedAnecdote)
     dispatch(updateAnecdote(upDated))
     dispatch(setNotification(`you voted '${upDated.content}'`, 10))
