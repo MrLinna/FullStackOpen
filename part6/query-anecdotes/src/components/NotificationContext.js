@@ -34,5 +34,4 @@ export const useNotificationDispatch = () => {
   return notificationAndDispatch[1]
 }
 
-
 export default NotificationContext

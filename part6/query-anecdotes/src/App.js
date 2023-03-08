@@ -13,7 +13,8 @@ const App = () => {
     } 
   })
   const dispatch = useNotificationDispatch()
-  
+
+
   const handleVote = (anecdote) => {
     updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes + 1 })
     
@@ -21,6 +22,7 @@ const App = () => {
     setTimeout(() => {
       dispatch({type: 'HIDE'})
     }, 5000)
+
   }
 
 
