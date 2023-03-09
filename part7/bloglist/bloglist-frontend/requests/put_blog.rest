@@ -1,0 +1,12 @@
+PUT http://localhost:3000/api/blogs/63fc9ddd24478dc47cd77b82
+Content-Type: application/json
+
+{
+  "user": "63e6367d72ed2f2c3d370b6b",
+  "likes": 1,
+  "author": "Joel Spolsky",
+  "title": "The Joel Test: 12 Steps to Better Code",
+  "url": "https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/"
+}
+
+
