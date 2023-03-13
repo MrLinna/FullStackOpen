@@ -5,8 +5,6 @@ import Togglable from './components/Togglable'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
-import loginService from './services/login'
-import { setNotification } from './reducers/notificationReducer'
 import {
   createNewBlog,
   setBlogs,
@@ -14,15 +12,22 @@ import {
   likeBlog
 } from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { login, setUser, logOut } from './reducers/userReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
-  const blogs = useSelector((state) => state.blogs)
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      dispatch(setUser(user))
+      blogService.setToken(user.token)
+    }
+  }, [dispatch])
 
   useEffect(() => {
     blogService.getAll().then((result) => {
@@ -30,28 +35,12 @@ const App = () => {
     })
   }, [dispatch])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
+  const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username,
-        password
-      })
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-    } catch (error) {
-      dispatch(setNotification('wrong username or password', 'red', 5))
-    }
+    dispatch(login(username, password))
   }
 
   const handleLike = async (id) => {
@@ -73,10 +62,6 @@ const App = () => {
     // Error: blogFormRef.current.toggleVisibility is not a function
     blogFormRef.current() //.toggleVisibility() //this works for some reason.
     dispatch(createNewBlog(blogObject))
-  }
-  const logout = () => {
-    window.localStorage.clear()
-    setUser(null)
   }
   return (
     <>
@@ -100,7 +85,7 @@ const App = () => {
           <Notification />
           <div>
             {user.name} logged in
-            <button id="logout-button" onClick={logout}>
+            <button id="logout-button" onClick={() => dispatch(logOut())}>
               logout
             </button>
           </div>
