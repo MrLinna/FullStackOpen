@@ -1,14 +1,13 @@
-
-const Input =({ value, onChange, text, placeHolder, ID }) => {
-  return(
+const Input = ({ value, onChange, text, placeHolder, ID }) => {
+  return (
     <div>
       {text}
       <input
         value={value}
         onChange={onChange}
-        type = { text === 'password' ? 'password' : null }
-        placeholder = {placeHolder ? placeHolder : null}
-        id = {ID ? ID : null}
+        type={text === 'password' ? 'password' : null}
+        placeholder={placeHolder ? placeHolder : null}
+        id={ID ? ID : null}
       />
     </div>
   )

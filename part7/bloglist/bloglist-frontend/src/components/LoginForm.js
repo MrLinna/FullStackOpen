@@ -1,12 +1,30 @@
 import PropTypes from 'prop-types'
 import Input from './Input'
-const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }) => {
-  return(
+const LoginForm = ({
+  handleLogin,
+  username,
+  setUsername,
+  password,
+  setPassword
+}) => {
+  return (
     <>
       <form onSubmit={handleLogin}>
-        <Input text = "username" value = {username} onChange={({ target }) => setUsername(target.value)} ID = 'username'/>
-        <Input text = "password" value = {password} onChange={({ target }) => setPassword(target.value)} ID = 'password'/>
-        <button type="submit" id = 'login-button'>login</button>
+        <Input
+          text="username"
+          value={username}
+          onChange={({ target }) => setUsername(target.value)}
+          ID="username"
+        />
+        <Input
+          text="password"
+          value={password}
+          onChange={({ target }) => setPassword(target.value)}
+          ID="password"
+        />
+        <button type="submit" id="login-button">
+          login
+        </button>
       </form>
     </>
   )

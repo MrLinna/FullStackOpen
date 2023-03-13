@@ -1,5 +1,4 @@
 const Notification = ({ message, msgColor }) => {
-
   const notificationStyle = {
     color: msgColor,
     background: 'lightgrey',
@@ -8,14 +7,13 @@ const Notification = ({ message, msgColor }) => {
     borderRadius: 5,
     padding: 10,
     marginBottom: 10
-
   }
   if (message === null) {
     return null
   }
 
   return (
-    <div className="notification" style={notificationStyle} >
+    <div className="notification" style={notificationStyle}>
       {message}
     </div>
   )

@@ -25,9 +25,7 @@ const logIn = async () => {
   return response.body.token
 }
 
-
 describe('all the blogs are returned and type is JSON', () => {
-
   test('right amount of JSON-type blogs', async () => {
     const response = await api
       .get('/api/blogs')
@@ -39,7 +37,7 @@ describe('all the blogs are returned and type is JSON', () => {
   test('identifier property of the blog posts is named id', async () => {
     const response = await helper.blogsInDb()
     //expect that field "id" exists
-    response.map(blog => expect(blog.id).toBeDefined())
+    response.map((blog) => expect(blog.id).toBeDefined())
   })
 })
 
@@ -62,7 +60,7 @@ describe('successfully create a new blog post', () => {
     const blogsAfterPost = await helper.blogsInDb()
     expect(blogsAfterPost).toHaveLength(helper.initialBlogs.length + 1)
 
-    const blogTitles = blogsAfterPost.map(b => b.title)
+    const blogTitles = blogsAfterPost.map((b) => b.title)
     expect(blogTitles).toContain('Post test')
   })
 
@@ -70,7 +68,7 @@ describe('successfully create a new blog post', () => {
     const nonLikesBlog = {
       title: 'zero test',
       author: 'blog_api.test.js',
-      url: 'http://randomurl.com',
+      url: 'http://randomurl.com'
     }
     const token = await logIn()
     await api
@@ -79,8 +77,13 @@ describe('successfully create a new blog post', () => {
       .set({ Authorization: `Bearer ${token}` })
 
     const blogsAfterPost = await helper.blogsInDb()
-    const blogTitlesAndLikes = blogsAfterPost.map(({ title,likes }) => ({ title, likes }))
-    const index = blogTitlesAndLikes.findIndex(e => e.title === nonLikesBlog.title)
+    const blogTitlesAndLikes = blogsAfterPost.map(({ title, likes }) => ({
+      title,
+      likes
+    }))
+    const index = blogTitlesAndLikes.findIndex(
+      (e) => e.title === nonLikesBlog.title
+    )
     expect(blogTitlesAndLikes[index].likes).toBe(0)
   })
 
@@ -127,10 +130,7 @@ describe('successfully create a new blog post', () => {
       url: 'http://npminstall.com',
       likes: 953
     }
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(401)
+    await api.post('/api/blogs').send(newBlog).expect(401)
 
     const blogsAfterPost = await helper.blogsInDb()
     expect(blogsAfterPost).toHaveLength(helper.initialBlogs.length)
@@ -158,11 +158,9 @@ describe('deletion of a blog', () => {
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length
-    )
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 
-    const titles = blogsAtEnd.map(r => r.title)
+    const titles = blogsAtEnd.map((r) => r.title)
     expect(titles).not.toContain(blogToDelete.title)
   })
 })
@@ -188,11 +186,10 @@ describe('blog updating works successfully ', () => {
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(BlogsAtStart.length)
 
-    const ids = blogsAtEnd.map(b => b.id)
+    const ids = blogsAtEnd.map((b) => b.id)
     expect(ids).toContain(blogToUpdate.id)
-    const afterUpdate = blogsAtEnd.filter(b => b.id === blogToUpdate.id)
+    const afterUpdate = blogsAtEnd.filter((b) => b.id === blogToUpdate.id)
     expect(afterUpdate[0].title).toBe('päivitetty')
-
   })
 
   test('test returns status 400 if id is invalid', async () => {
@@ -217,10 +214,8 @@ describe('blog updating works successfully ', () => {
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(BlogsAtStart.length)
   })
-
 })
 
 afterAll(async () => {
   await mongoose.connection.close()
 })
-

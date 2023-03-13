@@ -13,16 +13,15 @@ beforeEach(async () => {
 
 describe('Invalid users are not created', () => {
   test('do not create invalid users', async () => {
-
     const tooShortUsername = {
       name: 'Short Username',
-      username :'SU',
-      password:'aödfjdafökladj'
+      username: 'SU',
+      password: 'aödfjdafökladj'
     }
     const tooShortPassword = {
       name: 'Short Password',
-      username :'Shortpass',
-      password:'a'
+      username: 'Shortpass',
+      password: 'a'
     }
 
     const result1 = await api
@@ -30,7 +29,9 @@ describe('Invalid users are not created', () => {
       .send(tooShortUsername)
       .expect(400)
       .expect('Content-Type', /application\/json/)
-    expect(result1.body.error).toContain('User validation failed: username: Path `username` (`SU`) is shorter than the minimum allowed length (3).')
+    expect(result1.body.error).toContain(
+      'User validation failed: username: Path `username` (`SU`) is shorter than the minimum allowed length (3).'
+    )
 
     const result2 = await api
       .post('/api/users')
@@ -44,12 +45,11 @@ describe('Invalid users are not created', () => {
   })
 
   test('do not create duplicate usernames', async () => {
-
     const usersAtStart = await helper.usersInDb()
     const sameUsername = {
       name: 'Same Username',
-      username :usersAtStart[0].username,
-      password:'aödfjdafökladj'
+      username: usersAtStart[0].username,
+      password: 'aödfjdafökladj'
     }
     const result = await api
       .post('/api/users')
@@ -59,7 +59,6 @@ describe('Invalid users are not created', () => {
     expect(result.body.error).toContain('expected `username` to be unique')
   })
 })
-
 
 afterAll(async () => {
   await mongoose.connection.close()
