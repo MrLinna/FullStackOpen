@@ -1,9 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import LoginForm from './components/LoginForm'
-import Notification from './components/Notification'
-import Togglable from './components/Togglable'
-import Blog from './components/Blog'
-import BlogForm from './components/BlogForm'
+import Login from './components/Login'
 import blogService from './services/blogs'
 import {
   createNewBlog,
@@ -12,7 +8,12 @@ import {
   likeBlog
 } from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { login, setUser, logOut } from './reducers/userReducer'
+import { login, setUser } from './reducers/userReducer'
+import BlogList from './components/BlogList'
+import Users from './components/Users'
+import { Routes, Route } from 'react-router-dom'
+import Notification from './components/Notification'
+import { logOut } from './reducers/userReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -66,42 +67,39 @@ const App = () => {
   return (
     <>
       {!user && (
-        <>
-          <h2>Log in to application</h2>
-          <Notification />
-          <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-          />
-        </>
+        <Login
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
       )}
 
       {user && (
-        <>
+        <div>
           <h2>blogs</h2>
           <Notification />
-          <div>
-            {user.name} logged in
-            <button id="logout-button" onClick={() => dispatch(logOut())}>
-              logout
-            </button>
-          </div>
-          <Togglable buttonLabel="new blog" ref={blogFormRef}>
-            <BlogForm CreateBlog={addBlog} />
-          </Togglable>
-          {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleLike={handleLike}
-              removeBlog={deleteBlog}
-              user={user}
+          <div>{user.name} logged in</div>
+          <br />
+          <button id="logout-button" onClick={() => dispatch(logOut())}>
+            logout
+          </button>
+          <Routes>
+            <Route path="/users" element={<Users />} />
+            <Route
+              path="/"
+              element={
+                <BlogList
+                  addBlog={addBlog}
+                  blogFormRef={blogFormRef}
+                  handleLike={handleLike}
+                  deleteBlog={deleteBlog}
+                />
+              }
             />
-          ))}
-        </>
+          </Routes>
+        </div>
       )}
     </>
   )
