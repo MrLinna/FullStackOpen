@@ -6,22 +6,24 @@ import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import { useDispatch } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
+import { createNewBlog, setBlogs } from './reducers/blogReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
+  const blogs = useSelector((state) => state.blogs)
+
   useEffect(() => {
-    blogService.getAll().then((initialBlogs) => {
-      setBlogs(initialBlogs.sort((a, b) => b.likes - a.likes))
+    blogService.getAll().then((result) => {
+      dispatch(setBlogs(result))
     })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -42,8 +44,6 @@ const App = () => {
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (error) {
       dispatch(setNotification('wrong username or password', 'red', 5))
     }
@@ -81,21 +81,11 @@ const App = () => {
     }
   }
 
-  const addBlog = (blogObject) => {
-    console.log('blogobject', blogObject)
+  const addBlog = async (blogObject) => {
     // Error: blogFormRef.current.toggleVisibility is not a function
     blogFormRef.current() //.toggleVisibility() //this works for some reason.
-    blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog).sort((a, b) => b.likes - a.likes))
-      console.log('returned blog', returnedBlog)
-      dispatch(
-        setNotification(
-          `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`,
-          'green',
-          5
-        )
-      )
-    })
+    const newBlog = await blogService.create(blogObject)
+    dispatch(createNewBlog(newBlog))
   }
   const logout = () => {
     window.localStorage.clear()
