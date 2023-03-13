@@ -7,7 +7,12 @@ import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { setNotification } from './reducers/notificationReducer'
-import { createNewBlog, setBlogs } from './reducers/blogReducer'
+import {
+  createNewBlog,
+  setBlogs,
+  removeBlog,
+  likeBlog
+} from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
@@ -21,7 +26,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then((result) => {
-      dispatch(setBlogs(result))
+      dispatch(setBlogs(result.sort((a, b) => b.likes - a.likes)))
     })
   }, [dispatch])
 
@@ -51,41 +56,23 @@ const App = () => {
 
   const handleLike = async (id) => {
     const blogToUpdate = blogs.find((e) => e.id === id)
-    const likedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
-    const updatedBlog = await blogService.update(id, likedBlog)
-    setBlogs(
-      blogs
-        .map((blog) => (blog.id !== id ? blog : updatedBlog))
-        .sort((a, b) => b.likes - a.likes)
-    )
+    dispatch(likeBlog(blogToUpdate))
   }
 
   const deleteBlog = async (id) => {
     const blogToDelete = blogs.find((b) => b.id === id)
-    if (
-      window.confirm(
-        `Remove blog '${blogToDelete.title}' by '${blogToDelete.author}'?`
-      )
-    ) {
-      try {
-        await blogService.remove(id)
-        setBlogs(
-          blogs.filter((b) => b.id !== id).sort((a, b) => b.likes - a.likes)
-        )
-        dispatch(setNotification('blog deleted successfully', 'green', 5))
-      } catch (error) {
-        dispatch(
-          setNotification('Something went wrong while deleting blog.', 'red', 5)
-        )
-      }
+    const confirmDelete = window.confirm(
+      `Remove blog '${blogToDelete.title}' by '${blogToDelete.author}'?`
+    )
+    if (confirmDelete) {
+      dispatch(removeBlog(blogToDelete))
     }
   }
 
   const addBlog = async (blogObject) => {
     // Error: blogFormRef.current.toggleVisibility is not a function
     blogFormRef.current() //.toggleVisibility() //this works for some reason.
-    const newBlog = await blogService.create(blogObject)
-    dispatch(createNewBlog(newBlog))
+    dispatch(createNewBlog(blogObject))
   }
   const logout = () => {
     window.localStorage.clear()
