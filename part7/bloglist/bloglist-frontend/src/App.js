@@ -1,4 +1,3 @@
-/* eslint-disable arrow-spacing */
 import { useState, useEffect, useRef } from 'react'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
@@ -7,15 +6,16 @@ import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notificationMsg, setNotificationMsg] = useState(null)
   const blogFormRef = useRef()
-  const [notificationColor, setNotificationColor] = useState('green')
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((initialBlogs) => {
@@ -45,11 +45,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (error) {
-      setNotificationColor('red')
-      setNotificationMsg('wrong username or password')
-      setTimeout(() => {
-        setNotificationMsg(null)
-      }, 5000)
+      dispatch(setNotification('wrong username or password', 'red', 5))
     }
   }
 
@@ -76,17 +72,11 @@ const App = () => {
         setBlogs(
           blogs.filter((b) => b.id !== id).sort((a, b) => b.likes - a.likes)
         )
-        setNotificationColor('green')
-        setNotificationMsg('blog deleted successfully')
-        setTimeout(() => {
-          setNotificationMsg(null)
-        }, 5000)
+        dispatch(setNotification('blog deleted successfully', 'green', 5))
       } catch (error) {
-        setNotificationColor('red')
-        setNotificationMsg('Something went wrong while deleting blog.')
-        setTimeout(() => {
-          setNotificationMsg(null)
-        }, 5000)
+        dispatch(
+          setNotification('Something went wrong while deleting blog.', 'red', 5)
+        )
       }
     }
   }
@@ -98,13 +88,13 @@ const App = () => {
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog).sort((a, b) => b.likes - a.likes))
       console.log('returned blog', returnedBlog)
-      setNotificationColor('green')
-      setNotificationMsg(
-        `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+      dispatch(
+        setNotification(
+          `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`,
+          'green',
+          5
+        )
       )
-      setTimeout(() => {
-        setNotificationMsg(null)
-      }, 5000)
     })
   }
   const logout = () => {
@@ -116,10 +106,7 @@ const App = () => {
       {!user && (
         <>
           <h2>Log in to application</h2>
-          <Notification
-            message={notificationMsg}
-            msgColor={notificationColor}
-          />
+          <Notification />
           <LoginForm
             handleLogin={handleLogin}
             username={username}
@@ -133,10 +120,7 @@ const App = () => {
       {user && (
         <>
           <h2>blogs</h2>
-          <Notification
-            message={notificationMsg}
-            msgColor={notificationColor}
-          />
+          <Notification />
           <div>
             {user.name} logged in
             <button id="logout-button" onClick={logout}>

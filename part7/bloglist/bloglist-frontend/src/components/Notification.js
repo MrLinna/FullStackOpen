@@ -1,6 +1,13 @@
-const Notification = ({ message, msgColor }) => {
-  const notificationStyle = {
-    color: msgColor,
+import { useSelector } from 'react-redux'
+
+const Notification = () => {
+  const notification = useSelector((state) => state.notification)
+
+  if (notification === null) {
+    return null
+  }
+  const style = {
+    color: notification.color,
     background: 'lightgrey',
     fontSize: 20,
     borderStyle: 'solid',
@@ -8,15 +15,7 @@ const Notification = ({ message, msgColor }) => {
     padding: 10,
     marginBottom: 10
   }
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div className="notification" style={notificationStyle}>
-      {message}
-    </div>
-  )
+  return <div style={style}>{notification.message}</div>
 }
 
 export default Notification
