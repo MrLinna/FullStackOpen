@@ -25,6 +25,11 @@ const update = async (id, newObject) => {
   return response.data
 }
 
+const updateComment = async (id, newObject) => {
+  const response = await axios.put(`${baseUrl}/${id}/comments`, newObject)
+  return response.data
+}
+
 const remove = async (id) => {
   const config = {
     headers: { Authorization: token }
@@ -34,4 +39,4 @@ const remove = async (id) => {
 }
 
 // eslint-disable-next-line
-export default { getAll, create, setToken, update, remove }
+export default { getAll, create, setToken, update, remove, updateComment }

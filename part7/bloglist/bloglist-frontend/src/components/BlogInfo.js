@@ -1,10 +1,30 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import blogService from '../services/blogs'
 
 const BlogInfo = ({ blogToShow, handleLike }) => {
+  const [newComment, setNewComment] = useState('')
+  const [addedComments, setAddedComments] = useState([])
+
   if (!blogToShow) {
     return null
   }
-  console.log('comments:', blogToShow.comments)
+
+  const handleComment = async () => {
+    if (newComment.length > 0) {
+      const updDatedBlog = {
+        ...blogToShow,
+        comments: blogToShow.comments.concat(newComment)
+      }
+      await blogService.updateComment(blogToShow.id, updDatedBlog)
+      setAddedComments(addedComments.concat(newComment))
+      setNewComment('')
+    }
+  }
+
+  const handleCommentChange = (event) => {
+    setNewComment(event.target.value)
+  }
 
   return (
     <div>
@@ -20,10 +40,19 @@ const BlogInfo = ({ blogToShow, handleLike }) => {
       <br />
       added by {blogToShow.user.name}
       <h2>comments</h2>
+      <input value={newComment} onChange={handleCommentChange}></input>
+      <button id="commentButton" onClick={() => handleComment()}>
+        add comment
+      </button>
       <ul>
         {blogToShow.comments.map((comment) => (
           <li key={Math.floor(Math.random() * 99999999)}>{comment}</li>
         ))}
+        {addedComments.length > 0
+          ? addedComments.map((comment) => (
+              <li key={Math.floor(Math.random() * 99999999)}>{comment}</li>
+            ))
+          : null}
       </ul>
     </div>
   )
