@@ -12,7 +12,8 @@ const Blog = ({ blog, handleLike, removeBlog, user }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
+    backgroundColor: '#cbc4ff'
   }
 
   return (

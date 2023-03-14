@@ -18,7 +18,7 @@ import Notification from './components/Notification'
 import { logOut } from './reducers/userReducer'
 import UserInfo from './components/UserInfo'
 import BlogInfo from './components/BlogInfo'
-
+import './index.css'
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -53,6 +53,8 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     dispatch(login(username, password))
+    setUsername('')
+    setPassword('')
   }
 
   const handleLike = async (id) => {
@@ -85,11 +87,6 @@ const App = () => {
     ? blogs.find((b) => b.id === blogMatch.params.id)
     : null
 
-  const padding = {
-    padding: 5,
-    backgroundColor: 'LightGray'
-  }
-
   return (
     <>
       {!user && (
@@ -104,9 +101,20 @@ const App = () => {
 
       {user && (
         <div>
-          <div style={padding}>
-            <Link to="/">blogs</Link> <Link to="/users">users</Link>
+          <div className="screen__content">
+            <nav>
+              <div className="menuItems">
+                <div className="menuitem">
+                  <Link to="/">blogs</Link>
+                </div>
+                <div className="menuitem">
+                  <Link to="/users">users</Link>
+                </div>
+                <div class="animation start-home"></div>
+              </div>
+            </nav>
             <em> {user.name} logged in </em>
+
             <button id="logout-button" onClick={() => dispatch(logOut())}>
               logout
             </button>
@@ -139,6 +147,12 @@ const App = () => {
               }
             />
           </Routes>
+          <div className="screen__background1">
+            <span className="screen__background__shape screen__background__shape4"></span>
+            <span className="screen__background__shape screen__background__shape3"></span>
+            <span className="screen__background__shape screen__background__shape2"></span>
+            <span className="screen__background__shape screen__background__shape1"></span>
+          </div>
         </div>
       )}
     </>
@@ -146,8 +160,3 @@ const App = () => {
 }
 
 export default App
-
-/**
- *
- *
- */

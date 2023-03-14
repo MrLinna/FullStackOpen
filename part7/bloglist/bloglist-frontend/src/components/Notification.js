@@ -8,14 +8,25 @@ const Notification = () => {
   }
   const style = {
     color: notification.color,
-    background: 'lightgrey',
+    background: 'white',
     fontSize: 20,
     borderStyle: 'solid',
     borderRadius: 5,
     padding: 10,
     marginBottom: 10
   }
-  return <div style={style}>{notification.message}</div>
+  return (
+    <div
+      className={
+        notification.color === 'red'
+          ? 'notification__error'
+          : 'notification__success'
+      }
+      style={style}
+    >
+      {notification.message}
+    </div>
+  )
 }
 
 export default Notification
