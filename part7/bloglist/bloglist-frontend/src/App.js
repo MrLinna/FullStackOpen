@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import Login from './components/Login'
 import blogService from './services/blogs'
 import usersService from './services/users'
-
 import {
   createNewBlog,
   setBlogs,
@@ -14,7 +13,7 @@ import { login, setUser } from './reducers/userReducer'
 import { setUsers } from './reducers/usersReducer'
 import BlogList from './components/BlogList'
 import Users from './components/Users'
-import { Routes, Route, useMatch } from 'react-router-dom'
+import { Routes, Route, useMatch, Link } from 'react-router-dom'
 import Notification from './components/Notification'
 import { logOut } from './reducers/userReducer'
 import UserInfo from './components/UserInfo'
@@ -86,6 +85,11 @@ const App = () => {
     ? blogs.find((b) => b.id === blogMatch.params.id)
     : null
 
+  const padding = {
+    padding: 5,
+    backgroundColor: 'LightGray'
+  }
+
   return (
     <>
       {!user && (
@@ -100,13 +104,17 @@ const App = () => {
 
       {user && (
         <div>
-          <h2>blogs</h2>
+          <div style={padding}>
+            <Link to="/">blogs</Link> <Link to="/users">users</Link>
+            <em> {user.name} logged in </em>
+            <button id="logout-button" onClick={() => dispatch(logOut())}>
+              logout
+            </button>
+          </div>
+
+          <h2>blog app</h2>
           <Notification />
-          <div>{user.name} logged in</div>
-          <br />
-          <button id="logout-button" onClick={() => dispatch(logOut())}>
-            logout
-          </button>
+
           <Routes>
             <Route path="/users" element={<Users />} />
             <Route
@@ -138,3 +146,8 @@ const App = () => {
 }
 
 export default App
+
+/**
+ *
+ *
+ */
