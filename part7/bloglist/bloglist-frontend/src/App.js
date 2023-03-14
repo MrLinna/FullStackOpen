@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import Login from './components/Login'
 import blogService from './services/blogs'
+import usersService from './services/users'
+
 import {
   createNewBlog,
   setBlogs,
@@ -9,11 +11,13 @@ import {
 } from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, setUser } from './reducers/userReducer'
+import { setUsers } from './reducers/usersReducer'
 import BlogList from './components/BlogList'
 import Users from './components/Users'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useMatch } from 'react-router-dom'
 import Notification from './components/Notification'
 import { logOut } from './reducers/userReducer'
+import User from './components/User'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -36,8 +40,15 @@ const App = () => {
     })
   }, [dispatch])
 
+  useEffect(() => {
+    usersService.getAll().then((result) => {
+      dispatch(setUsers(result))
+    })
+  }, [dispatch])
+
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
+  const users = useSelector((state) => state.allUsers)
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -64,6 +75,9 @@ const App = () => {
     blogFormRef.current() //.toggleVisibility() //this works for some reason.
     dispatch(createNewBlog(blogObject))
   }
+  const match = useMatch('/users/:id')
+  const userProfile = match ? users.find((u) => u.id === match.params.id) : null
+
   return (
     <>
       {!user && (
@@ -87,6 +101,10 @@ const App = () => {
           </button>
           <Routes>
             <Route path="/users" element={<Users />} />
+            <Route
+              path="/users/:id"
+              element={<User userProfile={userProfile} />}
+            />
             <Route
               path="/"
               element={
