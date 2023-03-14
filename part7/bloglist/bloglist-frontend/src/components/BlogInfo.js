@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom'
 
 const BlogInfo = ({ blogToShow, handleLike }) => {
+  if (!blogToShow) {
+    return null
+  }
+  console.log('comments:', blogToShow.comments)
+
   return (
     <div>
       <h2>
@@ -14,7 +19,12 @@ const BlogInfo = ({ blogToShow, handleLike }) => {
       </button>
       <br />
       added by {blogToShow.user.name}
-      <br />
+      <h2>comments</h2>
+      <ul>
+        {blogToShow.comments.map((comment) => (
+          <li key={Math.floor(Math.random() * 99999999)}>{comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }
