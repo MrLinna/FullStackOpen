@@ -17,7 +17,8 @@ import Users from './components/Users'
 import { Routes, Route, useMatch } from 'react-router-dom'
 import Notification from './components/Notification'
 import { logOut } from './reducers/userReducer'
-import User from './components/User'
+import UserInfo from './components/UserInfo'
+import BlogInfo from './components/BlogInfo'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -75,8 +76,15 @@ const App = () => {
     blogFormRef.current() //.toggleVisibility() //this works for some reason.
     dispatch(createNewBlog(blogObject))
   }
-  const match = useMatch('/users/:id')
-  const userProfile = match ? users.find((u) => u.id === match.params.id) : null
+  const userMatch = useMatch('/users/:id')
+  const userToShow = userMatch
+    ? users.find((u) => u.id === userMatch.params.id)
+    : null
+
+  const blogMatch = useMatch('/blogs/:id')
+  const blogToShow = blogMatch
+    ? blogs.find((b) => b.id === blogMatch.params.id)
+    : null
 
   return (
     <>
@@ -103,7 +111,13 @@ const App = () => {
             <Route path="/users" element={<Users />} />
             <Route
               path="/users/:id"
-              element={<User userProfile={userProfile} />}
+              element={<UserInfo userProfile={userToShow} />}
+            />
+            <Route
+              path="/blogs/:id"
+              element={
+                <BlogInfo blogToShow={blogToShow} handleLike={handleLike} />
+              }
             />
             <Route
               path="/"

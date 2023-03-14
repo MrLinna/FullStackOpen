@@ -1,4 +1,4 @@
-const User = ({ userProfile }) => {
+const UserInfo = ({ userProfile }) => {
   if (!userProfile) {
     return null
   }
@@ -14,4 +14,4 @@ const User = ({ userProfile }) => {
     </div>
   )
 }
-export default User
+export default UserInfo
