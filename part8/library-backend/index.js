@@ -64,8 +64,16 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allAuthors: async () => Author.find({}),
-    allBooks: async (root, args) => {
-      return Book.find({})
+
+    allBooks: async (_root, { author, genre }) => {
+      let filter = {}
+      if (author) {
+        filter.author = await Author.findOne({ name: author })
+      }
+      if (genre) {
+        filter.genres = genre
+      }
+      return Book.find(filter)
     }
   },
   Author: {
@@ -90,7 +98,14 @@ const resolvers = {
       return book
     },
 
-    editAuthor: (root, args) => {}
+    editAuthor: async (root, { name, setBornTo }) => {
+      const author = await Author.findOneAndUpdate(
+        { name },
+        { born: setBornTo },
+        { new: true }
+      )
+      return author
+    }
   }
 }
 
