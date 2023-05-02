@@ -88,14 +88,18 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, { author: name, genres, published, title }) => {
-      let author = await Author.findOne({ name })
-      if (!author) {
-        author = new Author({ name })
-        await author.save()
+      try {
+        let author = await Author.findOne({ name })
+        if (!author) {
+          author = new Author({ name })
+          await author.save()
+        }
+        const book = new Book({ author, genres, published, title })
+        await book.save()
+        return book
+      } catch (error) {
+        throw new GraphQLError(error.message)
       }
-      const book = new Book({ author, genres, published, title })
-      await book.save()
-      return book
     },
 
     editAuthor: async (root, { name, setBornTo }) => {
@@ -104,7 +108,11 @@ const resolvers = {
         { born: setBornTo },
         { new: true }
       )
-      return author
+      if (author === null) {
+        throw new GraphQLError(`Author '${name}' does not exist`)
+      } else {
+        return author
+      }
     }
   }
 }
