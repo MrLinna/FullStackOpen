@@ -24,13 +24,19 @@ const App = () => {
   }
 
   if (!token) {
-    return (
-      <div>
-        <Notify errorMessage={errorMessage} />
-        <h2>Login</h2>
-        <LoginForm setToken={setToken} setError={notify} />
-      </div>
-    )
+    const tokenFromStorage = localStorage.getItem('library-user-token')
+
+    if (tokenFromStorage) {
+      setToken(tokenFromStorage)
+    } else {
+      return (
+        <div>
+          <Notify errorMessage={errorMessage} />
+          <h2>Login</h2>
+          <LoginForm setToken={setToken} setError={notify} />
+        </div>
+      )
+    }
   }
 
   return (
