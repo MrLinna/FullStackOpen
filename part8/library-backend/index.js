@@ -49,11 +49,17 @@ const typeDefs = `
 
   type Query {
     bookCount: Int!
+
     allBooks(author: String, genre: String): [Book!]!
 
     authorCount: Int!
+
     allAuthors: [Author!]!
+
     me: User
+
+    recommendedForMe: [Book!]!
+
   }
 
   type Mutation {
@@ -99,6 +105,18 @@ const resolvers = {
     },
     me: (root, args, context) => {
       return context.currentUser
+    },
+    recommendedForMe: async (root, args, context) => {
+      try {
+        const genre = context.currentUser.favoriteGenre
+        const allBooks = await Book.find({})
+        const booksToReturn = allBooks.filter(
+          (book) => book.genres.indexOf(genre) > -1
+        )
+        return booksToReturn
+      } catch (error) {
+        return []
+      }
     }
   },
   Author: {
@@ -206,7 +224,6 @@ startStandaloneServer(server, {
       const currentUser = await User.findById(decodedToken.id).populate(
         'favoriteGenre'
       )
-      console.log('context', currentUser)
       return { currentUser }
     }
   }
