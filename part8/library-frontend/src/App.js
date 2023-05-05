@@ -7,6 +7,13 @@ import { useApolloClient, useSubscription } from '@apollo/client'
 import Recommend from './components/Recommend'
 import { BOOK_ADDED, ALL_BOOKS } from './queries.js'
 
+export const updateCache = (cache, query, addedBook) => {
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: allBooks.concat(addedBook)
+    }
+  })
+}
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
@@ -15,8 +22,9 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
-      console.log(data)
-      alert(`New book added: ${data.data.bookAdded.title}`)
+      const addedBook = data.data.bookAdded
+      alert(`New book added: ${addedBook.title}`)
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
     }
   })
 
