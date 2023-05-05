@@ -64,13 +64,9 @@ const resolvers = {
         }
         const book = new Book({ author, genres, published, title })
         await book.save()
-        console.log('book mutatiossa', book)
         pubsub.publish('BOOK_ADDED', { bookAdded: book })
         return book
       } catch (error) {
-        console.log('')
-        console.log('mutation epäonnistui')
-        console.log('')
         throw new GraphQLError(error.message)
       }
     },
