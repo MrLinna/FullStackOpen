@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 		backgroundColor:theme.colors.primary,
 		borderRadius:2,
 		color: "white",
-		padding:2,
+		padding:3,
 		fontSize: theme.fontSizes.language,
 	},
 	biotext: {
