@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
 		borderRadius:5
 	},
 	avatarImage: {
-	flexGrow: 0,
-	padding: 10,
+		flexGrow: 0,
+		padding: 10,
 	},
 	
 	flexContainer: {

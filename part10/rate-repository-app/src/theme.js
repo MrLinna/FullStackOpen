@@ -6,6 +6,8 @@ const theme = {
     appBarText: "white",
     appBar: "#24292e",
     mainBackground: "#e1e4e8",
+    signInBtn: "#347af0",
+    shadow: "#000",
   },
   fontSizes: {
     body: 20,
