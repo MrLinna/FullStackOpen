@@ -8,6 +8,7 @@ const theme = {
     mainBackground: "#e1e4e8",
     signInBtn: "#347af0",
     shadow: "#000",
+    error: "#d73a4a",
   },
   fontSizes: {
     body: 20,

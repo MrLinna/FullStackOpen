@@ -4,6 +4,7 @@ import FormikTextInput from './FormikTextInput';
 import { Pressable, View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import theme from '../theme';
+import * as yup from 'yup';
 
 const SignInForm = () => {
   const styles = StyleSheet.create({
@@ -30,24 +31,8 @@ const SignInForm = () => {
       fontSize: theme.fontSizes.body,
       textAlign: 'center',
     },
-    inputContainer: {
-      backgroundColor: theme.colors.appBarText,
-      borderRadius: 10,
-      marginVertical: 10,
-      marginHorizontal: 20,
-      padding: 10,
-      shadowColor: theme.colors.shadow ,
-      shadowOffset: {
-        width: 0,
-        height: 3,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    },
-    input: {
-      height: 50,
-      color: theme.colors.shadow ,
+    input:{
+      fontSize:20
     }
   });
 
@@ -56,11 +41,18 @@ const SignInForm = () => {
     console.log("Password:", values.password);
   };
 
+  const validationSchema = yup.object().shape({
+    username: yup.string().required('Username is required'),
+    password: yup.string().required('Password is required'),
+  });
+
   return (
-    <Formik initialValues={{ username: '', password: '' }} onSubmit={onSubmit}>
+    <Formik initialValues={{ username: '', password: '' }} 
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+    >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={{ backgroundColor: 'white' }}>
-          <View style={styles.inputContainer}>
             <FormikTextInput 
               style={styles.input}
               name='username'
@@ -68,9 +60,7 @@ const SignInForm = () => {
               onChangeText={handleChange('username')}
               onBlur={handleBlur('username')}
               value={values.username}/>
-          </View>
 
-          <View style={styles.inputContainer}>
             <FormikTextInput 
               style={styles.input}
               name='password'
@@ -78,9 +68,9 @@ const SignInForm = () => {
               secureTextEntry
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
-              value={values.password}/>
-          </View>
-
+              value={values.password}
+            />
+          
           <Pressable onPress={handleSubmit} style={styles.buttonContainer}>
             <Text style={styles.buttonText}>Sign in</Text>
           </Pressable>
