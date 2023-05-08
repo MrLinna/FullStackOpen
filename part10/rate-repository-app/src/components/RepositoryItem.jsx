@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	flexContainer: {
 		display: 'flex',
 		paddingBottom: 10,
-		backgroundColor: 'white',
+		backgroundColor: theme.colors.appBarText,
 		flexDirection: 'row',
 	},
 	statText: {
@@ -27,25 +27,18 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	secondary:{
-		color: theme.colors.textSecondary,
 		paddingBottom:10,
 		fontSize:theme.fontSizes.body,
 		textAlign: 'center'
 	},
 	biosecondary:{
-		color: theme.colors.textSecondary,
 		paddingBottom:10,
 		fontSize:theme.fontSizes.body,
-	},
-	fullNameText: {
-		fontSize: theme.fontSizes.subheading,
-		fontWeight: theme.fontWeights.bold,
-		paddingTop:10,
 	},
 	language:{
 		backgroundColor:theme.colors.primary,
 		borderRadius:2,
-		color: "white",
+		color: theme.colors.appBarText,
 		padding:3,
 		fontSize: theme.fontSizes.language,
 	},
@@ -75,8 +68,8 @@ const RepositoryItem = ({item}) => {
 				/>
 				</View>
 				<View style={styles.biotext}>
-					<Text style={styles.fullNameText}>{item.fullName}</Text>
-					<Text style={styles.biosecondary}>{item.description}</Text>
+					<Text fontSize={'subheading'} fontWeight={'bold'} style={styles.fullNametex}>{item.fullName}</Text>
+					<Text color = 'textSecondary' style={styles.biosecondary}>{item.description}</Text>
 					<Text style={styles.language}>
 						{item.language}
 					</Text>
@@ -86,23 +79,23 @@ const RepositoryItem = ({item}) => {
 			<View style={styles.flexContainer} >
 				<View style = {styles.stats}>
 					<Text style={styles.statText}><Suffix value ={item.stargazersCount}/></Text>
-					<Text style ={styles.secondary}>Stars</Text>
+					<Text  color = 'textSecondary' style ={styles.secondary}>Stars</Text>
 				</View>
 				
 				<View style = {styles.stats}>
 					<Text style={styles.statText}><Suffix value ={item.forksCount}/></Text>
-					<Text style = {styles.secondary}>Forks</Text>
+					<Text  color = 'textSecondary' style = {styles.secondary}>Forks</Text>
 				</View>
 				
 				<View style = {styles.stats}>
 					<Text style={styles.statText}><Suffix value ={item.reviewCount}/></Text>
-					<Text style ={styles.secondary}>
+					<Text color = 'textSecondary'  style ={styles.secondary}>
 						Reviews</Text>
 				</View>
 
 				<View style = {styles.stats}>
 					<Text style={styles.statText}><Suffix value ={item.ratingAverage}/></Text>
-					<Text style ={styles.secondary}>Rating</Text>
+					<Text  color = 'textSecondary' style ={styles.secondary}>Rating</Text>
 				</View>
 			</View>
 		</View>
