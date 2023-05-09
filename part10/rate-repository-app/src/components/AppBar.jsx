@@ -2,6 +2,9 @@ import { View, StyleSheet, Text, ScrollView} from 'react-native';
 import Constants from 'expo-constants';
 import theme from '../theme';
 import { Link } from "react-router-native";
+import { useQuery } from "@apollo/client";
+import { ME } from "../graphql/queries";
+
 
 const styles = StyleSheet.create({
   container: {
@@ -24,29 +27,52 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+
+  const {data} = useQuery(ME, {fetchPolicy: 'cache-and-network'}); 
   return (
-
-
-<View style={styles.container}>
-  <ScrollView horizontal style={styles.scroll}>
-    
-    <Link to="/" style = {styles.scrollItem}>
-      <Text style ={styles.text}>Repositories</Text>
-    </Link>
-    
-    <Link to="/signin" style = {styles.scrollItem}>
-      <Text style ={styles.text}>Sign in</Text>
-    </Link>
-
-  </ScrollView>
-</View>
-
+  <View style={styles.container}>
+    <ScrollView horizontal style={styles.scroll}>
+      
+      <Link to="/" style = {styles.scrollItem}>
+        <Text style ={styles.text}>Repositories</Text>
+      </Link>
+      { data?.me
+      ? 
+       <Link to="/signout" style = {styles.scrollItem}>
+          <Text style ={styles.text}>{"Sign out"}</Text>
+        </Link>
+      
+      : <Link to="/signin" style = {styles.scrollItem}>
+          <Text style ={styles.text}>{"Sign in"}</Text>
+        </Link>
+      }
+    </ScrollView>
+  </View>
   );
 };
 
-
-
-  
-
-
 export default AppBar;
+
+
+
+/*
+import { View, StyleSheet, Text, ScrollView, Alert, Pressable} from 'react-native';
+import {useState} from "react";
+import { useNavigate } from 'react-router-native';
+  const navigate = useNavigate()
+  const [sure, setSure] = useState(false);
+  const showConfirmDialog = () => {
+    Alert.alert(
+      "Are you sure to sign out?",
+      "",
+      [
+        {text: "Sign out", onPress: () => setSure(true)},
+        {text: "Cancel"}
+      ]
+    )
+    if(sure){
+      setSure(false)
+      navigate('/signout')
+    }
+  }
+*/

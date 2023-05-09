@@ -8,6 +8,8 @@ import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
 import { useNavigate } from 'react-router-native';
 
+
+ 
 const SignInForm = () => {
   const styles = StyleSheet.create({
     buttonContainer: {
@@ -37,20 +39,19 @@ const SignInForm = () => {
       fontSize:20
     }
   });
-  const [signIn, data] = useSignIn();
-  const navigate = useNavigate();
-  
+  const [signIn] = useSignIn()
+
+  const navigate = useNavigate()
+
+
   const onSubmit = async (values) => {
     const { username, password } = values;
     try {
-      await signIn({ username, password });
-      navigate('/')
-      console.log('kijautuminen ok')
-
+        await signIn({ username, password });
+        navigate('/')
     } catch (error) {
       console.log(error)
     }
-   
   };
 
   const validationSchema = yup.object().shape({
