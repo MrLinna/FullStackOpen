@@ -5,6 +5,7 @@ import { Route, Routes, Navigate } from "react-router-native";
 import theme from "../theme";
 import SignOut from "./SignOut";
 import SignIn from "./SignIn";
+import SingleRepository from "./SingleRepository";
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -21,6 +22,11 @@ const Main = () => {
         <Route path="/" element={<RepositoryList />} exact />
         <Route path="/signin" element={<SignIn />} exact />
         <Route path="/signout" element={<SignOut />} exact />
+        <Route
+          path="/repositoryinfo/:id"
+          element={<SingleRepository />}
+          exact
+        />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

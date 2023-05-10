@@ -10,32 +10,9 @@ import { useNavigate } from "react-router-native";
 
 export const SignInForm = ({ onSubmit }) => {
   const styles = StyleSheet.create({
-    buttonContainer: {
-      backgroundColor: theme.colors.signInBtn,
-      borderRadius: 10,
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      marginHorizontal: 20,
-      marginTop: 10,
-      marginBottom: 20,
-      shadowColor: theme.colors.shadow,
-      shadowOffset: {
-        width: 0,
-        height: 3,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    },
-    buttonText: {
-      color: theme.colors.appBarText,
-      fontWeight: theme.fontWeights.bold,
-      fontSize: theme.fontSizes.body,
-      textAlign: "center",
-    },
-    input: {
-      fontSize: 20,
-    },
+    buttonContainer: theme.buttonContainer,
+    buttonText: theme.buttonText,
+    input: theme.input,
   });
 
   const validationSchema = yup.object().shape({

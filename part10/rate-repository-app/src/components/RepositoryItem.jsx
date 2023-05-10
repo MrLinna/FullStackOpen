@@ -1,7 +1,8 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Pressable } from "react-native";
 import theme from "../theme";
 import Text from "./Text";
-
+import { useNavigate } from "react-router-native";
+import { Suffix } from "./Suffix";
 const styles = StyleSheet.create({
   logo: {
     width: 80,
@@ -56,8 +57,15 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryItem = ({ item }) => {
+  const navigate = useNavigate();
+
+  const handlePress = (item) => {
+    const path = `/repositoryinfo/${item.id}`;
+    navigate(path);
+  };
+
   return (
-    <View>
+    <Pressable onPress={() => handlePress(item)}>
       <View style={styles.flexContainer}>
         <View style={styles.avatarImage}>
           <Image style={styles.logo} source={{ uri: item.ownerAvatarUrl }} />
@@ -121,13 +129,8 @@ const RepositoryItem = ({ item }) => {
           </Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
-
-const Suffix = ({ value }) =>
-  value > 1000
-    ? String((value / 1000).toFixed(1)).replace(/\.0+$/, "") + "k"
-    : value;
 
 export default RepositoryItem;
