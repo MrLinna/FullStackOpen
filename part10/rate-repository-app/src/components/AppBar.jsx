@@ -33,18 +33,24 @@ const AppBar = () => {
           <Text style={styles.text}>Repositories</Text>
         </Link>
 
-        <Link to="/review" style={styles.scrollItem}>
-          <Text style={styles.text}>Create a review</Text>
-        </Link>
-
         {data?.me ? (
-          <Link to="/signout" style={styles.scrollItem}>
-            <Text style={styles.text}>{"Sign out"}</Text>
-          </Link>
+          <>
+            <Link to="/review" style={styles.scrollItem}>
+              <Text style={styles.text}>Create a review</Text>
+            </Link>
+            <Link to="/signout" style={styles.scrollItem}>
+              <Text style={styles.text}>{"Sign out"}</Text>
+            </Link>
+          </>
         ) : (
-          <Link to="/signin" style={styles.scrollItem}>
-            <Text style={styles.text}>{"Sign in"}</Text>
-          </Link>
+          <>
+            <Link to="/signin" style={styles.scrollItem}>
+              <Text style={styles.text}>{"Sign in"}</Text>
+            </Link>
+            <Link to="/signup" style={styles.scrollItem}>
+              <Text style={styles.text}>{"Sign up"}</Text>
+            </Link>
+          </>
         )}
       </ScrollView>
     </View>

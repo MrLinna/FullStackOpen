@@ -6,8 +6,6 @@ import RepositoryItem from "./RepositoryItem";
 import ItemSeparator from "./ItemSeparator";
 
 const RepositoryInfo = ({ repository }) => {
-  console.log("Repository infossa", repository);
-
   const handleSubmit = () => {
     Linking.openURL(repository.url);
   };
