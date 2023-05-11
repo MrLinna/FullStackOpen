@@ -1,13 +1,13 @@
 import RepositoryInfo from "./RepositoryInfo";
 import { useParams } from "react-router-native";
-import { useQuery } from "@apollo/client";
-import { REPO_REVIEWS } from "../graphql/queries";
 import { format, parseISO } from "date-fns";
 import { FlatList, View, StyleSheet } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
 import ItemSeparator from "./ItemSeparator";
-
+import { useQuery } from "@apollo/client";
+import { REPO_REVIEWS } from "../graphql/queries";
+import { useState } from "react";
 const styles = StyleSheet.create({
   Container: {
     display: "flex",
@@ -58,23 +58,34 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepository = () => {
   const repo_id = useParams().id;
-
-  const { loading, data } = useQuery(REPO_REVIEWS, {
+  const [repository, setRepository] = useState();
+  const [reviews, setReviews] = useState();
+  useQuery(REPO_REVIEWS, {
     variables: { id: repo_id },
+    fetchPolicy: "cache-and-network",
+    onCompleted: (data) => {
+      setRepository(data?.repository);
+      setReviews(data?.repository.reviews.edges);
+    },
   });
 
-  const reviews = data?.repository.reviews.edges;
-  return (
-    <FlatList
-      data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} />}
-      keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => (
-        <RepositoryInfo loading={loading} data={data} />
-      )}
-      ItemSeparatorComponent={ItemSeparator}
-    />
-  );
+  if (repository === null || repository === undefined) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  } else {
+    return (
+      <FlatList
+        ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+        data={reviews}
+        renderItem={({ item }) => <ReviewItem review={item} />}
+        keyExtractor={({ node: { id } }) => id}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+    );
+  }
 };
 
 export default SingleRepository;

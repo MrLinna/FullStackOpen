@@ -3,7 +3,7 @@ import Text from "./Text";
 import FormikTextInput from "./FormikTextInput";
 import { Pressable, View, StyleSheet } from "react-native";
 import { Formik } from "formik";
-import theme from "../theme";
+import theme from "../SignInTheme";
 import * as yup from "yup";
 import useSignIn from "../hooks/useSignIn";
 import { useNavigate } from "react-router-native";

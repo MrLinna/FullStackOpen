@@ -6,6 +6,7 @@ import theme from "../theme";
 import SignOut from "./SignOut";
 import SignIn from "./SignIn";
 import SingleRepository from "./SingleRepository";
+import ReviewForm from "./ReviewForm";
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -27,6 +28,7 @@ const Main = () => {
           element={<SingleRepository />}
           exact
         />
+        <Route path="/review" element={<ReviewForm />} exact />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

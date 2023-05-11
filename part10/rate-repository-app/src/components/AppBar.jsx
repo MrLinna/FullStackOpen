@@ -1,59 +1,57 @@
-import { View, StyleSheet, Text, ScrollView} from 'react-native';
-import Constants from 'expo-constants';
-import theme from '../theme';
+import { View, StyleSheet, Text, ScrollView } from "react-native";
+import Constants from "expo-constants";
+import theme from "../theme";
 import { Link } from "react-router-native";
 import { useQuery } from "@apollo/client";
 import { ME } from "../graphql/queries";
 
-
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight*2,
+    paddingTop: Constants.statusBarHeight * 2,
     paddingBottom: Constants.statusBarHeight,
     backgroundColor: theme.colors.appBar,
-    flexDirection: 'row',
-    justifyContent:'space-evenly'
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
-  text:{
+  text: {
     fontSize: theme.fontSizes.appBar,
     color: theme.colors.appBarText,
-    fontWeight : theme.fontWeights.bold,
-    
+    fontWeight: theme.fontWeights.bold,
   },
-  scrollItem:{
-    paddingRight:20,
-    paddingLeft:15
-  }
+  scrollItem: {
+    paddingRight: 20,
+    paddingLeft: 15,
+  },
 });
 
 const AppBar = () => {
-
-  const {data} = useQuery(ME, {fetchPolicy: 'cache-and-network'}); 
+  const { data } = useQuery(ME, { fetchPolicy: "cache-and-network" });
   return (
-  <View style={styles.container}>
-    <ScrollView horizontal style={styles.scroll}>
-      
-      <Link to="/" style = {styles.scrollItem}>
-        <Text style ={styles.text}>Repositories</Text>
-      </Link>
-      { data?.me
-      ? 
-       <Link to="/signout" style = {styles.scrollItem}>
-          <Text style ={styles.text}>{"Sign out"}</Text>
+    <View style={styles.container}>
+      <ScrollView horizontal style={styles.scroll}>
+        <Link to="/" style={styles.scrollItem}>
+          <Text style={styles.text}>Repositories</Text>
         </Link>
-      
-      : <Link to="/signin" style = {styles.scrollItem}>
-          <Text style ={styles.text}>{"Sign in"}</Text>
+
+        <Link to="/review" style={styles.scrollItem}>
+          <Text style={styles.text}>Create a review</Text>
         </Link>
-      }
-    </ScrollView>
-  </View>
+
+        {data?.me ? (
+          <Link to="/signout" style={styles.scrollItem}>
+            <Text style={styles.text}>{"Sign out"}</Text>
+          </Link>
+        ) : (
+          <Link to="/signin" style={styles.scrollItem}>
+            <Text style={styles.text}>{"Sign in"}</Text>
+          </Link>
+        )}
+      </ScrollView>
+    </View>
   );
 };
 
 export default AppBar;
-
-
 
 /*
 import { View, StyleSheet, Text, ScrollView, Alert, Pressable} from 'react-native';
