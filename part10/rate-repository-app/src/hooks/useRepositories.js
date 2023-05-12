@@ -4,7 +4,7 @@ import { GET_REPOSITORIES } from "../graphql/queries";
 
 const useRepositories = (filter) => {
   let variables;
-  switch (filter) {
+  switch (filter.orderBy) {
     case "lastest":
       variables = { orderBy: "CREATED_AT", orderDirection: "DESC" };
       break;
@@ -17,11 +17,12 @@ const useRepositories = (filter) => {
     default:
       variables = {};
   }
-
+  variables.searchKeyword = filter.searchFilter;
   const { data } = useQuery(GET_REPOSITORIES, {
     variables: variables,
     fetchPolicy: "cache-and-network",
   });
+
   return {
     repositories: data ? data.repositories : undefined,
   };

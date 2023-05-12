@@ -4,8 +4,13 @@ export const GET_REPOSITORIES = gql`
   query Repositories(
     $orderBy: AllRepositoriesOrderBy
     $orderDirection: OrderDirection
+    $searchKeyword: String
   ) {
-    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
+    repositories(
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      searchKeyword: $searchKeyword
+    ) {
       edges {
         node {
           id
@@ -19,15 +24,6 @@ export const GET_REPOSITORIES = gql`
           ratingAverage
         }
       }
-    }
-  }
-`;
-
-export const ME = gql`
-  query Query {
-    me {
-      id
-      username
     }
   }
 `;
@@ -68,6 +64,34 @@ export const REPO_REVIEWS = gql`
             id
             text
             rating
+            createdAt
+            user {
+              id
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ME = gql`
+  query getCurrentUser($includeReviews: Boolean = false) {
+    me {
+      id
+      username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            text
+            rating
+            repository {
+              name
+              ownerName
+              id
+            }
             createdAt
             user {
               id
