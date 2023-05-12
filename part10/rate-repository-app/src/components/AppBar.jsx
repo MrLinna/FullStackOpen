@@ -19,8 +19,9 @@ const styles = StyleSheet.create({
     fontWeight: theme.fontWeights.bold,
   },
   scrollItem: {
-    paddingRight: 20,
-    paddingLeft: 15,
+    paddingHorizontal: 17,
+    borderRadius: 15,
+    paddingVertical: 6,
   },
 });
 
@@ -28,7 +29,7 @@ const AppBar = () => {
   const { data } = useQuery(ME, { fetchPolicy: "cache-and-network" });
   return (
     <View style={styles.container}>
-      <ScrollView horizontal style={styles.scroll}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <Link to="/" style={styles.scrollItem}>
           <Text style={styles.text}>Repositories</Text>
         </Link>
@@ -37,6 +38,9 @@ const AppBar = () => {
           <>
             <Link to="/review" style={styles.scrollItem}>
               <Text style={styles.text}>Create a review</Text>
+            </Link>
+            <Link to="/userreviews" style={styles.scrollItem}>
+              <Text style={styles.text}>{"My reviews"}</Text>
             </Link>
             <Link to="/signout" style={styles.scrollItem}>
               <Text style={styles.text}>{"Sign out"}</Text>
