@@ -8,7 +8,6 @@ const useCreateReview = () => {
     const repositoryName = values.RepoName;
     const rating = +values.Rating;
     const review = values.Review;
-
     try {
       const { data } = await mutate({
         variables: {

@@ -27,23 +27,6 @@ export const GET_REPOSITORIES = gql`
     }
   }
 `;
-
-export const SINGLE_REPO = gql`
-  query Repository($id: ID!) {
-    repository(id: $id) {
-      id
-      fullName
-      url
-      reviewCount
-      ratingAverage
-      stargazersCount
-      description
-      language
-      ownerAvatarUrl
-      forksCount
-    }
-  }
-`;
 // nåäitä voisi laittaa fragmentteihin
 export const REPO_REVIEWS = gql`
   query Repository($id: ID!) {
@@ -58,6 +41,7 @@ export const REPO_REVIEWS = gql`
       language
       ownerAvatarUrl
       forksCount
+
       reviews {
         edges {
           node {
@@ -76,11 +60,29 @@ export const REPO_REVIEWS = gql`
   }
 `;
 
+export const SINGLE_REPO = gql`
+  query Repository($id: ID!) {
+    repository(id: $id) {
+      id
+      fullName
+      url
+      reviewCount
+      ratingAverage
+      stargazersCount
+      description
+      language
+      ownerAvatarUrl
+      forksCount
+    }
+  }
+`;
+
 export const ME = gql`
   query getCurrentUser($includeReviews: Boolean = false) {
     me {
       id
       username
+
       reviews @include(if: $includeReviews) {
         edges {
           node {

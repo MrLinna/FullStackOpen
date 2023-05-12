@@ -7,7 +7,7 @@ import Text from "./Text";
 
 const UserReviews = () => {
   const variables = { includeReviews: true };
-  const { data } = useQuery(ME, {
+  const { data, refetch } = useQuery(ME, {
     variables: variables,
     fetchPolicy: "cache-and-network",
   });
@@ -18,7 +18,7 @@ const UserReviews = () => {
       <FlatList
         data={reviews}
         renderItem={({ item }) => (
-          <ReviewItem review={item} userReview={true} />
+          <ReviewItem review={item} userReview={true} refe={refetch} />
         )}
         keyExtractor={({ node: { id } }) => id}
         ItemSeparatorComponent={ItemSeparator}

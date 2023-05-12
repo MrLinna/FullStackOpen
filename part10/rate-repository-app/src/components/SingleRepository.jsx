@@ -21,11 +21,10 @@ const SingleRepository = () => {
       setReviews(data?.repository.reviews.edges);
     },
   });
-
   if (repository === null || repository === undefined) {
     return (
       <View>
-        <Text>Loading</Text>
+        <Text>Loading...</Text>
       </View>
     );
   } else {

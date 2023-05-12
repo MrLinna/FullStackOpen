@@ -11,6 +11,9 @@ export const SIGN_IN = gql`
 export const CREATE_REVIEW = gql`
   mutation CreateReview($review: CreateReviewInput!) {
     createReview(review: $review) {
+      repository {
+        createdAt
+      }
       user {
         username
       }
@@ -30,5 +33,11 @@ export const CREATE_USER = gql`
       username
       createdAt
     }
+  }
+`;
+
+export const DELETE_REVIEW = gql`
+  mutation deleteReview($id: ID!) {
+    deleteReview(id: $id)
   }
 `;

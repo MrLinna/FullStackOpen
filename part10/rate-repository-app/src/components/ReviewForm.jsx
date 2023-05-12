@@ -20,13 +20,14 @@ export const ReviewForm = () => {
     try {
       const response = await createReview(values);
       if (response) {
-        //const id = response.createReview.id;
-
-        navigate(`/`);
-        // navigate(`/repositoryinfo/${id}`);
+        const str = response.createReview.id;
+        const regex = /^[^.]+\.(.+)$/;
+        const ID = str.match(regex)[1];
+        const path = `/repositoryinfo/${ID}`;
+        navigate(path);
       }
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
     }
   };
 
