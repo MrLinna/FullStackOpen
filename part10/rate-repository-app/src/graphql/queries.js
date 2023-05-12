@@ -1,8 +1,11 @@
 import { gql } from "@apollo/client";
 
 export const GET_REPOSITORIES = gql`
-  query Query {
-    repositories {
+  query Repositories(
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+  ) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
       edges {
         node {
           id
@@ -45,7 +48,7 @@ export const SINGLE_REPO = gql`
     }
   }
 `;
-// tätä voisi vielä kaunistella.
+// nåäitä voisi laittaa fragmentteihin
 export const REPO_REVIEWS = gql`
   query Repository($id: ID!) {
     repository(id: $id) {

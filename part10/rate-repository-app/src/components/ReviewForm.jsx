@@ -7,6 +7,7 @@ import SignInTheme from "../SignInTheme";
 import * as yup from "yup";
 import useCreateReview from "../hooks/useCreateReview";
 import { useNavigate } from "react-router-native";
+
 export const ReviewForm = () => {
   const styles = StyleSheet.create({
     buttonContainer: SignInTheme.buttonContainer,
@@ -19,9 +20,10 @@ export const ReviewForm = () => {
     try {
       const response = await createReview(values);
       if (response) {
-        const id = response.createReview.id;
-        console.log(id);
+        //const id = response.createReview.id;
+
         navigate(`/`);
+        // navigate(`/repositoryinfo/${id}`);
       }
     } catch (error) {
       console.log(error);
